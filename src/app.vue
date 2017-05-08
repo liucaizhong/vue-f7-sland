@@ -6,7 +6,7 @@
     <f7-statusbar></f7-statusbar>
 
     <!-- Left Panel -->
-    <f7-panel left reveal layout="dark">
+    <!-- <f7-panel left reveal layout="white">
       <f7-view id="left-panel-view" navbar-through :dynamic-navbar="true">
         <f7-navbar v-if="$theme.ios" title="Left Panel" sliding></f7-navbar>
         <f7-pages>
@@ -28,10 +28,10 @@
           </f7-page>
         </f7-pages>
       </f7-view>
-    </f7-panel>
+    </f7-panel> -->
 
     <!-- Right Panel -->
-    <f7-panel right cover layout="dark">
+    <!-- <f7-panel right cover layout="dark">
       <f7-view id="right-panel-view" navbar-through :dynamic-navbar="true">
         <f7-navbar v-if="$theme.ios" title="Right Panel" sliding></f7-navbar>
         <f7-pages>
@@ -53,36 +53,40 @@
           </f7-page>
         </f7-pages>
       </f7-view>
-    </f7-panel>
+    </f7-panel> -->
 
     <!-- Main Views -->
     <f7-views>
       <f7-view id="main-view" navbar-through :dynamic-navbar="true" main>
         <!-- iOS Theme Navbar -->
         <f7-navbar v-if="$theme.ios">
-          <f7-nav-left>
+          <!-- <f7-nav-left>
             <f7-link icon="icon-bars" open-panel="left"></f7-link>
-          </f7-nav-left>
-          <f7-nav-center sliding>Framework7</f7-nav-center>
-          <f7-nav-right>
+          </f7-nav-left> -->
+          <f7-nav-center sliding>{{mainTitle}}</f7-nav-center>
+          <!-- <f7-nav-right>
             <f7-link icon="icon-bars" open-panel="right"></f7-link>
-          </f7-nav-right>
+          </f7-nav-right> -->
         </f7-navbar>
         <!-- Pages -->
         <f7-pages>
           <f7-page>
             <!-- Material Theme Navbar -->
             <f7-navbar v-if="$theme.material">
-              <f7-nav-left>
+              <!-- <f7-nav-left>
                 <f7-link icon="icon-bars" open-panel="left"></f7-link>
-              </f7-nav-left>
-              <f7-nav-center sliding>Framework7</f7-nav-center>
-              <f7-nav-right>
+              </f7-nav-left> -->
+              <f7-nav-center sliding>{{mainTitle}}</f7-nav-center>
+              <!-- <f7-nav-right>
                 <f7-link icon="icon-bars" open-panel="right"></f7-link>
-              </f7-nav-right>
+              </f7-nav-right> -->
             </f7-navbar>
+            <search-bar
+              :search-data="contacts"
+            >
+            </search-bar>
             <!-- Page Content -->
-            <f7-block-title>Welcome to my App</f7-block-title>
+            <!-- <f7-block-title>Welcome to my App</f7-block-title>
             <f7-block inner>
               <p>Duis sed erat ac eros ultrices pharetra id ut tellus. Praesent rhoncus enim ornare ipsum aliquet ultricies. Pellentesque sodales erat quis elementum sagittis.</p>
             </f7-block>
@@ -91,8 +95,8 @@
               <f7-list-item link="/about/" title="About"></f7-list-item>
               <f7-list-item link="/form/" title="Form"></f7-list-item>
               <f7-list-item link="/dynamic-route/blog/45/post/125/?foo=bar#about" title="Dynamic Route"></f7-list-item>
-            </f7-list>
-            <f7-block-title>Side Panels</f7-block-title>
+            </f7-list> -->
+            <!-- <f7-block-title>Side Panels</f7-block-title>
             <f7-block>
               <f7-grid>
                 <f7-col width="50">
@@ -102,8 +106,8 @@
                   <f7-button open-panel="right">Right Panel</f7-button>
                 </f7-col>
               </f7-grid>
-            </f7-block>
-            <f7-block-title>Modals</f7-block-title>
+            </f7-block> -->
+            <!-- <f7-block-title>Modals</f7-block-title>
             <f7-block>
               <f7-grid>
                 <f7-col width="50">
@@ -113,14 +117,23 @@
                   <f7-button open-login-screen="#login-screen">Login Screen</f7-button>
                 </f7-col>
               </f7-grid>
-            </f7-block>
+            </f7-block> -->
+
+            <!-- test component -->
+            <!-- <f7-photo-browser
+              ref="pb"
+              :photos="photos"
+              theme="dark"
+            ></f7-photo-browser>
+            <f7-link @click="openPhotoBrowser">Photos</f7-link> -->
+
           </f7-page>
         </f7-pages>
       </f7-view>
     </f7-views>
 
     <!-- Popup -->
-    <f7-popup id="popup">
+    <!-- <f7-popup id="popup">
       <f7-view navbar-fixed>
         <f7-pages>
           <f7-page>
@@ -133,10 +146,10 @@
           </f7-page>
         </f7-pages>
       </f7-view>
-    </f7-popup>
+    </f7-popup> -->
 
     <!-- Login Screen -->
-    <f7-login-screen id="login-screen">
+    <!-- <f7-login-screen id="login-screen">
       <f7-view>
         <f7-pages>
           <f7-page login-screen>
@@ -160,11 +173,92 @@
           </f7-page>
         </f7-pages>
       </f7-view>
-    </f7-login-screen>
+    </f7-login-screen> -->
 
   </div>
 </template>
 
 <script>
-export default {}
+import SearchBar from '@/Component/searchBar.vue'
+export default {
+  data () {
+    return {
+      // photos: [
+      //   {
+      //     // url: '/static/panel.jpg',
+      //     url: require('../static/panel.jpg'),
+      //     caption: 'Picture 1'
+      //   }
+      // ]
+    }
+  },
+  methods: {
+    // openPhotoBrowser: function () {
+    //     this.$refs.pb.open();
+    // }
+  },
+  computed: {
+    mainTitle: function () {
+      let title = '南土资产'
+      return title
+    },
+    contacts: function () {
+      let contacts = {
+        '博时': [
+          {
+            'id': '0',
+            'name': 'Aaron',
+            'indus': '电子',
+            'grade': '分析师',
+            'phone': '13817134049'
+          },
+          {
+            'id': '1',
+            'name': 'Adam',
+            'indus': '计算机',
+            'grade': '分析师',
+            'phone': '13817134049'
+          },
+          {
+            'id': '2',
+            'name': 'Abbie',
+            'indus': '电子',
+            'grade': '助理',
+            'phone': '13817134049'
+          }
+        ],
+        '嘉实': [
+          {
+            'id': '3',
+            'name': 'Aaron',
+            'indus': '电子',
+            'grade': '分析师',
+            'phone': '13817134049'
+          },
+          {
+            'id': '4',
+            'name': 'Adam',
+            'indus': '计算机',
+            'grade': '分析师',
+            'phone': '13817134049'
+          },
+          {
+            'id': '5',
+            'name': 'Abbie',
+            'indus': '电子',
+            'grade': '助理',
+            'phone': '13817134049'
+          }
+        ]
+      }
+      this.$store.commit('initContacts', {
+        contacts: contacts
+      })
+      return contacts
+    }
+  },
+  components: {
+    searchBar: SearchBar
+  }
+}
 </script>
