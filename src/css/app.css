@@ -1,3 +1,53 @@
 /* =========
 Your custom styles go here
  ========= */
+.search-content {
+  margin-top: 0;
+  padding: 0;
+}
+.m-t-0 {
+  margin-top: 0;
+}
+
+.m-t-15 {
+  margin-top: 15px;
+}
+
+.m-r-7 {
+  margin-right: 7px;
+}
+
+.btn-add {
+  margin: 0 auto;
+}
+
+.contact-content > .page-content {
+  margin-top: 88px !important;
+  padding-top: 0 !important;
+}
+
+.contact-content > .page-content::-webkit-scrollbar {
+  display:none;
+}
+
+.contact-sorter {
+  list-style-type: none;
+  color: #007aff;
+  position: fixed;
+  z-index: 999;
+  right: 5px;
+  top: 120px;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.contact-sorter a:hover {
+  cursor: pointer;
+}
+
+.item-input.error-msg {
+  font-size: 15px;
+  color: red;
+  width: 130px;
+}
