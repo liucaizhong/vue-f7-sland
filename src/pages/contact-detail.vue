@@ -37,7 +37,7 @@
         <f7-label>电话</f7-label>
         <f7-input v-if="editing" type="tel" placeholder="电话" v-model="phone" name="phone" :readonly="!editing"></f7-input>
         <f7-input v-else type="tel" placeholder="电话" v-model="phone" name="phone" readonly>
-          <a :href="'tel:'+phone">{{phone}}</a>
+          <a :href="'tel:'+phone" class="external">{{phone}}</a>
         </f7-input>
         <f7-input
           type="text"
