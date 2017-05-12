@@ -1,10 +1,6 @@
 /* =========
 Your custom styles go here
  ========= */
-.search-content {
-  margin-top: 0;
-  padding: 0;
-}
 .m-t-0 {
   margin-top: 0;
 }
@@ -22,12 +18,35 @@ Your custom styles go here
 }
 
 .contact-content > .page-content {
-  margin-top: 88px !important;
+  top: 88px !important;
   padding-top: 0 !important;
 }
 
 .contact-content > .page-content::-webkit-scrollbar {
   display:none;
+}
+
+.search-content {
+  margin-top: 0;
+  padding: 0;
+  margin-bottom: 133px;
+}
+.search-result {
+  margin-bottom: 0;
+  margin-right: 20px;
+}
+
+.contact-amount {
+  font-size: 16px;
+  text-align: center;
+  background-color: #FFF;
+}
+
+.amount-desc {
+  margin-left: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-top: 0.3px solid #c8c7cc;
 }
 
 .contact-sorter {
@@ -36,10 +55,10 @@ Your custom styles go here
   position: fixed;
   z-index: 999;
   right: 5px;
-  top: 120px;
-  padding-left: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  font-size: 10px;
+  top: 20%;
+  margin: 0;
+  padding: 0;
 }
 
 .contact-sorter a:hover {
@@ -50,4 +69,14 @@ Your custom styles go here
   font-size: 15px;
   color: red;
   width: 130px;
+}
+
+.delete-btn * {
+  font-size: 16px;
+  color: red;
+  text-align: center;
+}
+
+.delete-btn:hover {
+  cursor: pointer;
 }

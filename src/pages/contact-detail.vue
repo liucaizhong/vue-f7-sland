@@ -48,6 +48,9 @@
         </f7-input>
       </f7-list-item>
     </f7-list>
+    <f7-block v-show="editing" inner class="delete-btn">
+      <f7-link @click="onDel">删除联系人</f7-link>
+    </f7-block>
   </f7-page>
 </template>
 
@@ -121,6 +124,36 @@ export default {
       //clear error
       this.nameError = false
       this.phoneError = false
+    },
+    onDel () {
+      let f7 = this.$f7
+      let store = this.$store
+      let router = this.$router
+      let group = this.params.group
+      let id = this.params.id
+      let buttons1 = [
+          {
+              text: '删除联系人',
+              color: 'red',
+              onClick: function() {
+                store.commit('delContact', {
+                  key: group,
+                  id: id
+                })
+                router.back()
+              }
+          }
+      ];
+      let buttons2 = [
+          {
+              text: '取消'
+          }
+      ];
+      let groups = [buttons1, buttons2];
+      f7.actions(groups);
+    },
+    confirmDel () {
+
     },
     onEdit () {
       if(this.editing) {

@@ -28,20 +28,22 @@
               :search-list="'#'+searchList"
               :placeholder="placeholder"
               :clear-button="true"
+              @searchbar:search="onSearch"
               @blur="onBlur"
               :params="searchParams"
               :form="false"
             ></f7-searchbar>
             <contacts
               :searchList="searchList"
+              :found="found"
             >
             </contacts>
             <f7-toolbar bottom>
               <f7-link class="btn-add" :open-popup="'#'+popupId"><f7-icon f7="add"></f7-icon></f7-link>
             </f7-toolbar>
-
           </f7-page>
         </f7-pages>
+
       </f7-view>
     </f7-views>
 
@@ -63,13 +65,21 @@ export default {
       searchConditon: {
         searchIn: '.item-title, .item-subtitle, .item-text'
       },
-      popupId: 'add-contact'
+      popupId: 'add-contact',
+      found: 0
     }
   },
   methods: {
+    onSearch (query, found) {
+      this.found = found.length
+    },
     onBlur (event) {
       let $$ = this.$$
-      $$('.searchbar')[0].f7Searchbar.disable()
+      let el = $$('.searchbar')[0].f7Searchbar
+
+      if(!el.query) {
+        el.disable()
+      }
     }
   },
   computed: {

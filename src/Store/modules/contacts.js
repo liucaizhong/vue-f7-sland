@@ -122,8 +122,12 @@ const mutations = {
   addContact (state, payload) {
     state.contact = {...state.contact, [payload.key]: payload.data }
   },
-  delContacts (state) {
-    state.contact = {}
+  delContact (state, payload) {
+    state.contact[payload.key].forEach((cur, i, arr) => {
+      if(cur.id === payload.id) {
+        arr.splice(i,1)
+      }
+    })
   }
 }
 
