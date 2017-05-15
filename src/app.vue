@@ -38,6 +38,11 @@
               :found="found"
             >
             </contacts>
+            <div class="contact-sorter-container" >
+              <ul class="contact-sorter">
+                <li v-for="key in sorter"><a @click="scrollTo(key)">{{key}}</a></li>
+              </ul>
+            </div>
             <f7-toolbar bottom>
               <f7-link class="btn-add" :open-popup="'#'+popupId"><f7-icon f7="add"></f7-icon></f7-link>
             </f7-toolbar>
@@ -66,8 +71,42 @@ export default {
         searchIn: '.item-title, .item-subtitle, .item-text'
       },
       popupId: 'add-contact',
-      found: 0
+      found: 0,
+      sorter: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+              'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+              'U', 'V', 'W', 'X', 'Y', 'Z', '#'
+      ],
+      startPageY: 0,
+      startKey: 0
     }
+  },
+  mounted () {
+    let el = document.querySelector('ul.contact-sorter')
+    el.addEventListener('touchstart', (event) => {
+      if(event.targetTouches.length == 1) {
+        event.preventDefault();// 阻止浏览器默认事件，重要
+        let touch = event.targetTouches[0]
+        this.startPageY = touch.pageY
+        this.startKey = this.sorter.indexOf(touch.target.innerText)
+        console.log('start pageY is '+this.startPageY)
+        console.log('start key is '+this.startKey)
+      }
+    })
+    el.addEventListener('touchmove', (event) => {
+     // 如果这个元素的位置内只有一个手指的话
+      if(event.targetTouches.length == 1) {
+        event.preventDefault();// 阻止浏览器默认事件，重要
+        let touch = event.targetTouches[0]
+        // 把元素放在手指所在的位置
+        let curPageY = touch.pageY
+        let count = Math.floor((curPageY - this.startPageY)/16)
+        let curKey = this.startKey + count
+        let scrollTo = document.getElementById(this.sorter[curKey])
+        if(scrollTo) {
+          document.querySelector('div.page-content').scrollTop = scrollTo.offsetTop
+        }
+      }
+    }, false)
   },
   methods: {
     onSearch (query, found) {
@@ -80,6 +119,11 @@ export default {
       if(!el.query) {
         el.disable()
       }
+    },
+    scrollTo (divId) {
+      let el = document.querySelector('div.page-content')
+      let scrollTo = document.getElementById(divId)
+      el.scrollTop = scrollTo.offsetTop
     }
   },
   computed: {

@@ -49,19 +49,24 @@ Your custom styles go here
   border-top: 0.3px solid #c8c7cc;
 }
 
+.contact-sorter-container {
+  position: fixed;
+  z-index: 999;
+  right: 0;
+  top: 20%;
+}
+
 .contact-sorter {
   list-style-type: none;
   color: #007aff;
-  position: fixed;
-  z-index: 999;
-  right: 5px;
   font-size: 10px;
-  top: 20%;
   margin: 0;
   padding: 0;
+  width: 20px;
+  text-align: center;
 }
 
-.contact-sorter a:hover {
+.contact-sorter li:hover {
   cursor: pointer;
 }
 
