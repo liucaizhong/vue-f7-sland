@@ -20,6 +20,7 @@ Your custom styles go here
 .contact-content > .page-content {
   top: 88px !important;
   padding-top: 0 !important;
+  background-color: #fff;
 }
 
 .contact-content > .page-content::-webkit-scrollbar {
@@ -51,9 +52,11 @@ Your custom styles go here
 
 .contact-sorter-container {
   position: fixed;
-  z-index: 999;
+  z-index: 99;
   right: 0;
   top: 20%;
+  width: 20px;
+  height: 100%;
 }
 
 .contact-sorter {
