@@ -3,7 +3,7 @@
     <f7-view navbar-fixed>
       <f7-pages>
         <f7-page>
-          <f7-navbar>
+          <f7-navbar sliding>
             <f7-nav-left>
               <f7-link @click="onClose" close-popup>{{navLeftTitle}}</f7-link>
             </f7-nav-left>

@@ -1,111 +1,5 @@
-let contact = {
-  'A': [
-    {
-      'id': '0',
-      'name': 'Aaron',
-      'comp': '博时',
-      'indus': '电子',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '1',
-      'name': 'Adam',
-      'comp': '博时',
-      'indus': '计算机',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '2',
-      'name': 'Abbie',
-      'comp': '博时',
-      'indus': '电子',
-      'grade': '助理',
-      'phone': '13817134049'
-    }
-  ],
-  'B': [
-    {
-      'id': '3',
-      'name': 'Aaron',
-      'comp': '博时',
-      'indus': '电子',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '4',
-      'name': 'Adam',
-      'comp': '嘉实',
-      'indus': '计算机',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '5',
-      'name': 'Abbie',
-      'comp': '嘉实',
-      'indus': '电子',
-      'grade': '助理',
-      'phone': '13817134049'
-    }
-  ],
-  'C': [
-    {
-      'id': '3',
-      'name': 'Aaron',
-      'comp': '博时',
-      'indus': '电子',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '4',
-      'name': 'Adam',
-      'comp': '嘉实',
-      'indus': '计算机',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '5',
-      'name': 'Abbie',
-      'comp': '嘉实',
-      'indus': '电子',
-      'grade': '助理',
-      'phone': '13817134049'
-    }
-  ],
-  'D': [
-    {
-      'id': '3',
-      'name': 'Aaron',
-      'comp': '博时',
-      'indus': '电子',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '4',
-      'name': 'Adam',
-      'comp': '嘉实',
-      'indus': '计算机',
-      'grade': '分析师',
-      'phone': '13817134049'
-    },
-    {
-      'id': '5',
-      'name': 'Abbie',
-      'comp': '嘉实',
-      'indus': '电子',
-      'grade': '助理',
-      'phone': '13817134049'
-    }
-  ]
-}
 const state = {
-  contact: contact
+   contact: {}
 }
 
 const mutations = {
@@ -123,7 +17,11 @@ const mutations = {
   addContact (state, payload) {
     state.contact = {...state.contact, [payload.key]: payload.data }
   },
-  
+
+  initContact (state, payload) {
+    state.contact = {...payload.data}
+  },
+
   delContact (state, payload) {
     state.contact[payload.key].forEach((cur, i, arr) => {
       if(cur.id === payload.id) {

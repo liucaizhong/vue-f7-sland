@@ -13,14 +13,14 @@
         :id="searchList"
         :no-hairlines="true"
       >
-        <f7-list-group v-for="(group, key) in updatedContacts" :id="key">
+        <f7-list-group v-for="(group, key) in contacts" :id="'user'+key">
           <f7-list-item :title="key" group-title></f7-list-item>
           <f7-list-item
             v-for="detail in group"
             :title="detail.name"
             :subtitle="detail.comp"
             :text="detail.indus"
-            :link="'contacts/' + key + '/'+ detail.id">
+            :link="'contacts/'+ compGroup + '/' + compName + '/' + key + '/'+ detail.id">
           </f7-list-item>
         </f7-list-group>
         <div class="contact-amount" v-show="!found">
@@ -29,22 +29,14 @@
       </f7-list>
 
   </f7-block>
-  <!-- <div class="contact-sorter-container">
-    <ul class="contact-sorter">
-      <li v-for="key in sorter"><a @click="scrollTo(key)">{{key}}</a></li>
-    </ul>
-  </div> -->
-<!-- </div> -->
 </template>
 
 <script>
   export default {
     data () {
       return {
-        // sorter: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-        //         'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-        //         'U', 'V', 'W', 'X', 'Y', 'Z', '#'
-        //       ]
+        compGroup: this.$route.params.g_comp,
+        compName: this.$route.params.comp
       }
     },
     props: {
@@ -55,26 +47,19 @@
       'found': {
         type: Number,
         default: 0
+      },
+      'contacts': {
+        type: Object,
       }
     },
     computed: {
-      updatedContacts: function () {
-        return this.$store.state.contacts.contact
-      },
       amount: function () {
         let amount = 0
-        for (let k in this.updatedContacts) {
-          amount += this.updatedContacts[k].length
+        for (let k in this.contacts) {
+          amount += this.contacts[k].length
         }
         return amount
       }
-    },
-    methods: {
-      // scrollTo (divId) {
-      //   let el = document.querySelector('div.page-content')
-      //   let scrollTo = document.getElementById(divId)
-      //   el.scrollTop = scrollTo.offsetTop
-      // }
     }
   }
 </script>

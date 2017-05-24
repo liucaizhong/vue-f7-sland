@@ -43,8 +43,8 @@ new Vue({
     /* Uncomment to enable Material theme: */
     // material: true,
     routes: Routes,
-    cache: true,
-    pushState: true,
+    // cache: true,
+    // pushState: true,
     externalLinks: '.external',
     // pushStateSeparator: '#'
   },

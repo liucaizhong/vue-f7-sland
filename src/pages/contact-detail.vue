@@ -1,4 +1,5 @@
 <template lang="html">
+
   <f7-page>
     <f7-navbar sliding>
       <f7-nav-left>
@@ -58,9 +59,9 @@
 export default {
   data () {
     return {
-      contacts: this.$store.state.contacts.contact,
+      // contacts: this.$store.state.contacts.contact,
       params: {
-        group: this.$route.params.group,
+        group: this.$route.params.g_user,
         id: this.$route.params.id
       },
       editing: false,
@@ -80,10 +81,12 @@ export default {
       phoneInput: ''
     }
   },
-  beforeMount () {
+  mounted () {
+    let compGroup = this.$route.params.g_comp
+    let compName = this.$route.params.comp
+    let contacts = this.$store.state.contacts.contact[compGroup][compName]
     let formData = ((contacts, group, id)=> {
       let infos = contacts[group]
-
       let info = infos.find((cur) => {
         return cur.id === id
       })
@@ -94,7 +97,7 @@ export default {
         grade: info.grade,
         phone: info.phone
       }
-    })(this.contacts, this.params.group, this.params.id)
+    })(contacts, this.params.group, this.params.id)
 
     this.name = formData.name
     this.comp = formData.comp
