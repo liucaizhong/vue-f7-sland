@@ -21,6 +21,8 @@
       :params="searchParams"
       :form="false"
     ></f7-searchbar>
+    <f7-preloader v-show="loading" color="blue" size="25px" class="spinner">
+    </f7-preloader>
     <f7-block class="search-content">
       <!-- Will be visible if there is no any results found, defined by "searchbar-not-found" class -->
         <f7-list class="searchbar-not-found">
@@ -45,7 +47,9 @@
         </f7-list>
 
     </f7-block>
-    <sorter :sorter="sorter" :parent="'comp'"></sorter>
+    <div slot="fixed">
+      <sorter :sorter="sorter" :parent="'comp'"></sorter>
+    </div>
   </f7-page>
 
 </template>
@@ -60,10 +64,11 @@ export default {
       placeholder: '搜索',
       searchList: 'search-list',
       searchConditon: {},
-      sorter: [],
-      comps: {},
+      // sorter: [],
+      // comps: {},
       backTitle: '返回',
-      mainTitle: '公司列表'
+      mainTitle: '公司列表',
+      loading: true
     }
   },
   computed: {
@@ -74,6 +79,18 @@ export default {
       }, this.searchConditon)
 
       return params
+    },
+    sorter: function () {
+      return Object.keys(this.$store.state.contacts.contact).sort()
+    },
+    comps: function () {
+      let obj = {}
+      let data = this.$store.state.contacts.contact
+      let keys = Object.keys(this.$store.state.contacts.contact).sort()
+      keys.forEach((cur) => {
+        obj[cur] = Object.keys(data[cur])
+      })
+      return {...obj}
     }
   },
   methods: {
@@ -88,35 +105,36 @@ export default {
         el.disable()
       }
     },
-    initSorter (keys) {
-      this.sorter = this.sorter.concat(keys)
-    },
+    // initSorter (keys) {
+    //   this.sorter = this.sorter.concat(keys)
+    // },
     initContacts (data) {
       this.$store.commit({
         type: 'initContact',
         data: data
       })
     },
-    initComps (keys, data) {
-      let obj = {}
-      keys.forEach((cur) => {
-        obj[cur] = Object.keys(data[cur])
-      })
-      this.comps = {...obj}
-      // console.dir(this.comps)
-    },
+    // initComps (keys, data) {
+    //   let obj = {}
+    //   keys.forEach((cur) => {
+    //     obj[cur] = Object.keys(data[cur])
+    //   })
+    //   this.comps = {...obj}
+    // console.dir(this.comps)
+    // },
   },
   mounted () {
     let url = process.env.NODE_ENV === 'production'
               ? 'http://slandasset.applinzi.com/contacts/API/get.php'
-              : 'http://localhost:3000/contacts'
+              : 'http://localhost:3000/getcontact'
 
     axios.get(url)
     .then((response) => {
       let dataObj = response.data
       this.initContacts(dataObj)
-      this.initComps(Object.keys(dataObj), dataObj)
-      this.initSorter(Object.keys(dataObj))
+      this.loading = false
+      // this.initComps(Object.keys(dataObj), dataObj)
+      // this.initSorter(Object.keys(dataObj))
     })
     .catch((error) => {
       console.log(error)

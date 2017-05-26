@@ -31,7 +31,9 @@
     <f7-toolbar bottom>
       <f7-link class="btn-add" :open-popup="'#'+popupId"><f7-icon f7="add"></f7-icon></f7-link>
     </f7-toolbar>
-    <sorter :sorter="sorter" :parent="'user'"></sorter>
+    <div slot="fixed">
+      <sorter :sorter="sorter" :parent="'user'"></sorter>
+    </div>
   </f7-page>
 
 </template>
@@ -82,7 +84,7 @@ export default {
       let group = this.$route.params.g_comp
       let name = this.$route.params.comp
 
-      return Object.keys(this.$store.state.contacts.contact[group][name])
+      return Object.keys(this.$store.state.contacts.contact[group][name]).sort()
     },
     contacts: function () {
       let group = this.$route.params.g_comp

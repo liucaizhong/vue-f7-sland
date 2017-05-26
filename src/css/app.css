@@ -88,3 +88,43 @@ Your custom styles go here
 .delete-btn:hover {
   cursor: pointer;
 }
+
+.spinner {
+  position: absolute;
+  left: 45%;
+  top: 10%;
+  z-index: 999;
+}
+
+.workplan .item-content>.item-inner{
+  margin-left: 0;
+}
+.workplan .spinner {
+  top: 40%;
+}
+
+.workplan .page-content {
+  overflow-x: hidden;
+}
+
+.workplan .li-transition {
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+}
+
+.workplan .delete-btn{
+  font-size: 15px;
+  width: 60px;
+  height: 44px;
+  background-color: red;
+  text-align: center;
+  line-height: 3;
+  color: #FFF;
+  position: absolute;
+  top: 0;
+  right: -60px;
+}
+
+option[data-default] {
+  color: #f2e8e6;
+}

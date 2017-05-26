@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -130,24 +132,36 @@ export default {
       if(!this.nameError && !this.phoneError) {
         let f7 = this.$f7
         let formData = f7.formToData('#add-form')
-        Object.assign(formData, {
-          id: '10'
-        })
-        let willUpdateDetail = [formData]
+        let url = process.env.NODE_ENV === 'production'
+                  ? 'http://slandasset.applinzi.com/contacts/API/insert.php'
+                  : 'http://localhost:3000/insertcontact'
 
-        this.$store.commit('addContact', {
-          key: 'C',
-          data: willUpdateDetail
+        // let postData = JSON.stringify(formData)
+        axios.post(url, JSON.stringify(formData),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
         })
-        let clearForm = {
-          'name': '',
-          'comp': '',
-          'indus': '',
-          'grade': '',
-          'phone': ''
-        }
-        f7.formFromData('#add-form', clearForm)
-        f7.closeModal('#'+this.popupId)
+        .then((response) => {
+          console.log('response back!')
+          console.dir(response)
+          // this.$store.commit('initContact', {
+          //   data: response.data
+          // })
+          // let clearForm = {
+          //   'name': '',
+          //   'comp': '',
+          //   'indus': '',
+          //   'grade': '',
+          //   'phone': ''
+          // }
+          // f7.formFromData('#add-form', clearForm)
+          // f7.closeModal('#'+this.popupId)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
       }
     },
     onClose () {

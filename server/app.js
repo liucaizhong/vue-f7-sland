@@ -26,9 +26,10 @@ app.all('*', function(req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
 
     if (req.method == 'OPTIONS') {
-        res.statusCode = 200
+      console.log('Options start!')
+      res.statusCode = 204
     } else {
-        next()
+      next()
     }
 });
 

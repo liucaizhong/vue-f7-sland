@@ -12,9 +12,9 @@
           <f7-nav-center sliding>{{mainTitle}}</f7-nav-center>
         </f7-navbar>
 
-        <f7-card>
+        <f7-card v-if="isDev">
           <f7-card-header>
-            <f7-link>工作计划</f7-link>
+            <f7-link href="workplan">工作计划</f7-link>
           </f7-card-header>
           <f7-card-content>
             <p>用于管理调研计划、个股报告计划、行业报告计划</p>
@@ -22,7 +22,7 @@
         </f7-card>
         <f7-card>
           <f7-card-header>
-            <f7-link href="contacts" :ignore-cache="true">外部通讯录</f7-link>
+            <f7-link href="contacts">外部通讯录</f7-link>
           </f7-card-header>
           <f7-card-content>
             <p>用于管理外部客户联系人信息</p>
@@ -41,7 +41,8 @@
 export default {
   data () {
     return {
-      mainTitle: '南土资产'
+      mainTitle: '南土资产',
+      isDev: process.env.NODE_ENV === 'development'
     }
   }
 }

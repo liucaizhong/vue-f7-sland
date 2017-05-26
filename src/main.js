@@ -16,6 +16,7 @@ import Framework7ThemeColors from 'framework7/dist/css/framework7.ios.colors.min
 
 // Import framework7-icons
 import Framework7Icons from 'framework7-icons/css/framework7-icons.css'
+import Animate from 'animate.css/animate.css'
 
 // Import App Custom Styles
 import AppStyles from './css/app.css'

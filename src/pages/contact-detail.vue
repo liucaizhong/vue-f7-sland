@@ -3,7 +3,7 @@
   <f7-page>
     <f7-navbar sliding>
       <f7-nav-left>
-        <f7-link @click="onBack"><f7-icon v-show="!this.editing" icon="icon-back" class="m-r-7"></f7-icon>{{backTitle}}</f7-link>
+        <f7-link @click="onBack"><f7-icon v-show="!editing" icon="icon-back" class="m-r-7"></f7-icon>{{backTitle}}</f7-link>
       </f7-nav-left>
       <f7-nav-right>
         <f7-link @click="onEdit">{{editTitle}}</f7-link>
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -139,11 +141,28 @@ export default {
               text: '删除联系人',
               color: 'red',
               onClick: function() {
-                store.commit('delContact', {
-                  key: group,
+                let url = process.env.NODE_ENV === 'production'
+                          ? 'http://slandasset.applinzi.com/contacts/API/delete.php'
+                          : 'http://localhost:3000/deletecontact'
+
+                axios.post(url, {
                   id: id
+                },{
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                  }
                 })
-                router.back()
+                .then((response) => {
+                  console.log('response back!')
+                  console.dir(response)
+                  // this.$store.commit('initContact', {
+                  //   data: response.data
+                  // })
+                  router.back()
+                })
+                .catch((error) => {
+                  console.log(error)
+                })
               }
           }
       ];
@@ -154,9 +173,6 @@ export default {
       ];
       let groups = [buttons1, buttons2];
       f7.actions(groups);
-    },
-    confirmDel () {
-
     },
     onEdit () {
       if(this.editing) {
@@ -184,21 +200,35 @@ export default {
         if(!this.nameError && !this.phoneError) {
           let f7 = this.$f7
           let formData = f7.formToData('#detail-form')
-          let group = this.params.group
           let id = this.params.id
           Object.assign(formData, {
             id: id
           })
-          let willUpdateDetail = {
-            [group]: formData
-          }
+          let url = process.env.NODE_ENV === 'production'
+                    ? 'http://slandasset.applinzi.com/contacts/API/update.php'
+                    : 'http://localhost:3000/updatecontact'
 
-          this.$store.commit('updateContacts', {
-            willUpdateDetail: willUpdateDetail
+          axios.post(url, {
+            contact: formData
+          },{
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            }
+          })
+          .then((response) => {
+            console.log('response back!')
+            console.dir(response)
+            // this.$store.commit('initContact', {
+            //   data: response.data
+            // })
+            this.editing = !this.editing
+          })
+          .catch((error) => {
+            console.log(error)
           })
         }
       }
-      if(!this.nameError && !this.phoneError) {
+      else {
         this.editing = !this.editing
       }
     }
