@@ -15,8 +15,4 @@ export default [
     path: '/workplan',
     component: require('./pages/workplan.vue')
   },
-  // {
-  //   path: '/workplan/r/:id',
-  //   component: require('./pages/research-plan.vue')
-  // }
 ]
