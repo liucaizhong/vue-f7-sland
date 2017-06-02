@@ -81,12 +81,12 @@ export default {
       return params
     },
     sorter: function () {
-      return Object.keys(this.$store.state.contacts.contact).sort()
+      return Object.keys(this.$store.state.contacts.contact)
     },
     comps: function () {
       let obj = {}
       let data = this.$store.state.contacts.contact
-      let keys = Object.keys(this.$store.state.contacts.contact).sort()
+      let keys = Object.keys(this.$store.state.contacts.contact)
       keys.forEach((cur) => {
         obj[cur] = Object.keys(data[cur])
       })
@@ -123,7 +123,7 @@ export default {
     // console.dir(this.comps)
     // },
   },
-  mounted () {
+  created () {
     let url = process.env.NODE_ENV === 'production'
               ? 'http://slandasset.applinzi.com/contacts/API/get.php'
               : 'http://localhost:3000/getcontact'

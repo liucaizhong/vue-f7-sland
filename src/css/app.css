@@ -107,9 +107,14 @@ Your custom styles go here
   overflow-x: hidden;
 }
 
-.workplan .li-transition {
-  transition: all 0.3s linear;
-  -webkit-transition: all 0.3s linear;
+.workplan li.li-transition {
+  transition: transform 0.3s linear;
+  -webkit-transition: transform 0.3s linear;
+}
+
+.workplan .accordion-item-content {
+  -webkit-transform: none;
+  transform: none;
 }
 
 .workplan .delete-btn{
@@ -127,4 +132,8 @@ Your custom styles go here
 
 option[data-default] {
   color: #f2e8e6;
+}
+
+.add-btn {
+  display: inline;
 }

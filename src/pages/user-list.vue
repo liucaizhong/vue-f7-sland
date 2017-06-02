@@ -47,7 +47,7 @@ export default {
   data () {
     return {
       placeholder: '搜索',
-      searchList: 'search-list',
+      searchList: 'search-people',
       searchConditon: {
         searchIn: '.item-title, .item-subtitle, .item-text'
       },

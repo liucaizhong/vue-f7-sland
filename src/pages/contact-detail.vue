@@ -57,6 +57,7 @@
 
 <script>
 import axios from 'axios'
+import pinyin from '../plugins/pinyin.js'
 
 export default {
   data () {
@@ -83,7 +84,7 @@ export default {
       phoneInput: ''
     }
   },
-  mounted () {
+  created () {
     let compGroup = this.$route.params.g_comp
     let compName = this.$route.params.comp
     let contacts = this.$store.state.contacts.contact[compGroup][compName]
@@ -155,10 +156,14 @@ export default {
                 .then((response) => {
                   console.log('response back!')
                   console.dir(response)
-                  // this.$store.commit('initContact', {
-                  //   data: response.data
-                  // })
-                  router.back()
+                  let res = JSON.parse(response.data)
+                  console.dir(res)
+                  if(!res.msg.errcode) {
+                    store.commit('initContact', {
+                      data: res.data
+                    })
+                    router.back()
+                  }
                 })
                 .catch((error) => {
                   console.log(error)
@@ -201,16 +206,18 @@ export default {
           let f7 = this.$f7
           let formData = f7.formToData('#detail-form')
           let id = this.params.id
-          Object.assign(formData, {
-            id: id
-          })
           let url = process.env.NODE_ENV === 'production'
                     ? 'http://slandasset.applinzi.com/contacts/API/update.php'
                     : 'http://localhost:3000/updatecontact'
 
-          axios.post(url, {
-            contact: formData
-          },{
+          let pinyinOfName = pinyin.getCamelChars(this.name)
+          let postData = Object.assign({}, formData, {
+            group: pinyinOfName[0],
+            id: id
+          })
+          console.log(postData)
+          axios.post(url, JSON.stringify(postData),
+          {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             }
@@ -218,10 +225,14 @@ export default {
           .then((response) => {
             console.log('response back!')
             console.dir(response)
-            // this.$store.commit('initContact', {
-            //   data: response.data
-            // })
-            this.editing = !this.editing
+            let res = JSON.parse(response.data)
+            if(!res.msg.errcode) {
+              this.$store.commit('initContact', {
+                data: res.data
+              })
+              this.editing = !this.editing
+            }
+
           })
           .catch((error) => {
             console.log(error)

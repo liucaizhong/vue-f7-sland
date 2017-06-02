@@ -41,7 +41,7 @@ function requestPost(realUrl, req, res) {
   // let data = JSON.parse(rawData)
   // console.log(rawData)
   // let data = querystring.stringify(rawData)
-  // console.log(data)
+  console.log(data)
   let urlObj = url.parse(realUrl)
 	let options = {
 	    host: urlObj.hostname,

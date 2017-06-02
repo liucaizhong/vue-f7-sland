@@ -8,7 +8,6 @@
     <!-- Main Views -->
     <f7-views>
       <!-- <comp-list></comp-list> -->
-      <!-- <user-list :sorter="userSorter"></user-list> -->
       <home></home>
       <add-contact :popupId="popupId" :popupTitle="popupTitle"></add-contact>
     </f7-views>
@@ -18,6 +17,7 @@
 
 <script>
 import Home from '@/pages/home-page.vue'
+// import CompList from '@/pages/comp-list.vue'
 import AddContact from '@/pages/add-contact.vue'
 
 export default {
@@ -30,6 +30,7 @@ export default {
   components: {
     home: Home,
     addContact: AddContact,
+    // compList: CompList
   }
 }
 </script>

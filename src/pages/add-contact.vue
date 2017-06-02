@@ -83,6 +83,7 @@
 
 <script>
 import axios from 'axios'
+import pinyin from '../plugins/pinyin.js'
 
 export default {
   data () {
@@ -136,8 +137,11 @@ export default {
                   ? 'http://slandasset.applinzi.com/contacts/API/insert.php'
                   : 'http://localhost:3000/insertcontact'
 
-        // let postData = JSON.stringify(formData)
-        axios.post(url, JSON.stringify(formData),
+        let pinyinOfName = pinyin.getCamelChars(this.nameInput)
+        let postData = Object.assign({}, formData, {
+          group: pinyinOfName[0]
+        })
+        axios.post(url, JSON.stringify(postData),
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -146,18 +150,21 @@ export default {
         .then((response) => {
           console.log('response back!')
           console.dir(response)
-          // this.$store.commit('initContact', {
-          //   data: response.data
-          // })
-          // let clearForm = {
-          //   'name': '',
-          //   'comp': '',
-          //   'indus': '',
-          //   'grade': '',
-          //   'phone': ''
-          // }
-          // f7.formFromData('#add-form', clearForm)
-          // f7.closeModal('#'+this.popupId)
+          let res = JSON.parse(response.data)
+          if(!res.msg.errcode) {
+            this.$store.commit('initContact', {
+              data: res.data
+            })
+            let clearForm = {
+              'name': '',
+              'comp': '',
+              'indus': '',
+              'grade': '',
+              'phone': ''
+            }
+            f7.formFromData('#add-form', clearForm)
+            f7.closeModal('#'+this.popupId)
+          }
         })
         .catch((error) => {
           console.log(error)
