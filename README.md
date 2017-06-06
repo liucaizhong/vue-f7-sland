@@ -25,7 +25,8 @@ npm run build
 * `src/routes.js` - app routes
 * `src/app.vue` - main app structure/component# wx-research-platform-m
 
-#json format
+# contacts
+# json format
 {
   'A': {
     'A博时': {
@@ -83,8 +84,11 @@ npm run build
     ......
   }
 }
-#json api
+# json api
 * Get => Params: comp公司Id或者名称，能作唯一标识的
 * Insert => Params: name姓名 + comp公司名称 + indus行业 + grade职称 + phone电话
 * Update => Params: id联系人惟一标识 + (name | comp | indus | grade | phone)增量更新其中某几个字段
 * Delete => Params: id联系人惟一标识
+
+# workplan
+# json format

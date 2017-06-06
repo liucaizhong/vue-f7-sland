@@ -3,7 +3,7 @@
   <f7-navbar sliding>
     <f7-nav-left>
       <f7-link @click="onBack">
-        <f7-icon v-show="!editing" icon="icon-back" class="m-r-7">
+        <f7-icon v-show="!editing" icon="icon-back">
         </f7-icon>
         {{backTitle}}
       </f7-link>
@@ -96,128 +96,22 @@
     </f7-list-item>
   </f7-list>
 
-  <f7-block-title>
-    <div @touchstart.prevent.stop="onAdd($event)" class="add-btn">
-      <f7-icon
-        v-show="editing"
-        f7="add_round_fill"
-        size="22px"
-        color="green">
-      </f7-icon>
-    </div>
-    调研计划
-  </f7-block-title>
-  <!-- :link="'/workplan/'+type[0]+'/'+key+'?edit='+editing" -->
-  <f7-list accordion>
-    <f7-list-item
-      accordion-item
-      v-for="(value, key) in resPlanItems"
-      v-if="value !== undefined"
-      :title="value.date+' '+value.comp"
-      :data-id="value.id"
-      :data-idx="key"
-      :data-type="types[0]"
-      class="li-transition"
-      @accordion:open="onOpen($event)"
-      @accordion:close="onClose($event)"
-    >
-      <div slot="media" @touchstart.prevent.stop="onDel($event)">
-        <f7-icon
-          v-show="editing"
-          f7="delete_round_fill"
-          class="m-r-7"
-          size="22px"
-          color="red"
-        >
-        </f7-icon>
-      </div>
-      <div
-        slot="root"
-        class="delete-btn"
-        @touchstart.stop="onConfirmDel($event)"
-        :data-idx="key"
-        :data-arr="'resplan'"
-      >
-        删除
-      </div>
-      <f7-accordion-content>
-        <f7-block>
-          <f7-list form>
-            <f7-list-item>
-              <f7-label>公司名称</f7-label>
-              <f7-input type="text" placeholder="公司名称" name="comp" :readonly="!editing"></f7-input>
-            </f7-list-item>
-            <f7-list-item>
-              <f7-label>预计调研时间</f7-label>
-              <f7-input type="text" placeholder="预计调研时间" name="date" :readonly="!editing"></f7-input>
-            </f7-list-item>
-            <f7-list-item>
-              <f7-label>预期看点</f7-label>
-              <f7-input type="text" placeholder="预期看点" name="event" :readonly="!editing"></f7-input>
-            </f7-list-item>
-          </f7-list>
-        </f7-block>
-      </f7-accordion-content>
-    </f7-list-item>
-  </f7-list>
-
-  <f7-block-title>
-    <f7-icon
-      v-show="editing"
-      f7="add_round_fill"
-      size="22px"
-      color="green">
-    </f7-icon>
-    个股报告计划
-  </f7-block-title>
-  <f7-list>
-    <f7-list-item
-      v-for="item in items"
-      :title="'Item ' + item"
-      :link="'/'+item">
-      <div slot="media">
-        <f7-icon
-          v-show="editing"
-          f7="delete_round_fill"
-          class="m-r-7"
-          size="22px"
-          color="red">
-        </f7-icon>
-      </div>
-    </f7-list-item>
-  </f7-list>
-
-  <f7-block-title>
-    <f7-icon
-      v-show="editing"
-      f7="add_round_fill"
-      size="22px"
-      color="green">
-    </f7-icon>
-    行业报告计划
-  </f7-block-title>
-  <f7-list>
-    <f7-list-item
-      v-for="item in items"
-      :title="'Item ' + item"
-      :link="'/'+item">
-      <div slot="media">
-        <f7-icon
-          v-show="editing"
-          f7="delete_round_fill"
-          class="m-r-7"
-          size="22px"
-          color="red">
-        </f7-icon>
-      </div>
-    </f7-list-item>
-  </f7-list>
+  <!-- 调研计划 -->
+  <work-plan
+    v-for="value in types"
+    :planType="value"
+    :editing="editing"
+    :formContent="configForm(value)"
+    :planTitle="configTitle(value)"
+  >
+  </work-plan>
 
 </f7-page>
 </template>
 
 <script>
 import { PLANTYPES } from '../constant.js'
+import WorkPlan from '@/Component/work-plan.vue'
 
 export default {
   data () {
@@ -229,10 +123,9 @@ export default {
       year: '1',
       quarter: '',
       editing: false,
-      deleting: false,
-      items: [1, 2, 3, 4, 5],//for dev
       hasAuthority: true,
       types: PLANTYPES,
+      isDev: process.env.NODE_ENV === 'development'
     }
   },
   created () {
@@ -293,9 +186,6 @@ export default {
       let date = new Date()
       return Math.floor(date.getMonth()/3)
     },
-    resPlanItems: function () {
-      return this.$store.state.workplan[this.types[0]].curPlan
-    }
   },
   methods: {
     onEdit () {
@@ -325,122 +215,52 @@ export default {
         this.$store.commit('cancel')
       }
       else {
-        this.$router.back()
-      }
-    },
-    onDel (e) {
-      let parentLi = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
-      console.dir(parentLi)
-      parentLi.style.transform = 'translateX(-60px)'
-    },
-    onConfirmDel (e) {
-      let delLi = e.target.parentElement
-      let delUl = delLi.parentElement
-      let dataAttr = delLi.dataset
-      let delPromise = new Promise((resolve, reject)=>{
-        delLi.setAttribute('class', 'animated fadeOutLeft')
-        setTimeout(()=>{
-          resolve()
-        }, 300)
-      })
-      delPromise.then(()=>{
-        delLi.removeAttribute('class')
-        delLi.setAttribute('class', 'li-transition')
-        delLi.style.transform = 'translateX(0px)'
-        this.$store.commit('prepare', {
-          method: 'delete',
-          data: {
-            id: dataAttr.id
-          },
-          idx: dataAttr.idx,
-          type: dataAttr.type
-        })
-      })
-    },
-    onAdd (e) {
-      console.log('add new research plan')
-      // this.$router.loadPage('/workplan/'+t+'/new')
-      let date = new Date()
-      let year = date.getFullYear()
-      let month = date.getMonth()+1
-      month = month < 10 ? '0'+month: month
-      let day = date.getDate()
-      day = day < 10 ? '0'+day: day
-      let fullDate = [year, month, day].join('.')
-      this.$store.commit('prepare', {
-        method: 'insert',
-        data: {
-          id: undefined,
-          comp: '',
-          date: fullDate,
-          event: ''
-        },
-        idx: undefined,
-        type: this.types[0] //get from props
-      })
-    },
-    onOpen (e) {
-      console.log('open accordion')
-      console.dir(e.target)
-      let target = e.target
-      let dataAttr = target.dataset
-      let form = target.getElementsByTagName('FORM')[0]
-      console.dir(form)
-      let f7 = this.$f7
-      let formData = this.$store.state.workplan[dataAttr.type].curPlan[dataAttr.idx]
-      console.dir(formData)
-      f7.formFromData(form, formData)
-      if(!target.hasAttribute('data-content')) {
-        target.setAttribute('data-content', JSON.stringify(formData))
-      }
-      console.dir(e.target)
-    },
-    onClose (e) {
-      console.log('close accordion')
-      console.log(this.editing)
-      if(this.editing) {
-        let target = e.target
-        let dataAttr = target.dataset
-        let id = dataAttr.id
-        let idx = dataAttr.idx
-        let form = target.getElementsByTagName('FORM')[0]
-        let f7 = this.$f7
-        let formData = f7.formToData(form)
-        let curFormDataObj = Object.assign(formData, {
-          id: id
-        })
-        let preFormData = target.dataset.content || '{}'
-        let preFormDataObj = JSON.parse(preFormData)
-        console.dir(curFormDataObj)
-        console.dir(preFormDataObj)
-        if(!this.isSameObject(preFormDataObj, curFormDataObj)) {
-          console.log('update begin')
-          target.setAttribute('data-content', JSON.stringify(curFormDataObj))
-          this.$store.commit('prepare', {
-            method: 'update',
-            data: curFormDataObj,
-            idx: dataAttr.idx,
-            type: dataAttr.type
-          })
+        if(this.isDev) {
+          this.$router.back()
+        }
+        else {
+          window.location.href = '/index.php'
         }
       }
-      console.dir(e.target)
     },
-    //compare plain object
-    isSameObject (a, b) {
-      if(Object.keys(a).length !== Object.keys(b).length) {
-        return false
+    configForm (type) {
+      switch (type) {
+        case this.types[0]:
+          return [{
+            name: 'comp',
+            desc: '公司名称'
+          },{
+            name: 'date',
+            desc: '预计调研时间'
+          },{
+            name: 'event',
+            desc: '预期看点'
+          }]
+          break
+        case this.types[1]:
+
+          break
+        case this.types[2]:
+
+          break
       }
-      for(let k in a) {
-        if(b[k] === undefined) {
-          return false
-        }
-        if(a[k] !== b[k]) {
-          return false
-        }
+    },
+    configTitle (type) {
+      switch (type) {
+        case this.types[0]:
+          return '调研计划'
+          break
+        case this.types[1]:
+
+          break
+        case this.types[2]:
+
+          break
       }
-      return true
     }
+  },
+  components: {
+    workPlan: WorkPlan
   }
 }
 </script>

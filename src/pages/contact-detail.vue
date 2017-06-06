@@ -3,7 +3,11 @@
   <f7-page>
     <f7-navbar sliding>
       <f7-nav-left>
-        <f7-link @click="onBack"><f7-icon v-show="!editing" icon="icon-back" class="m-r-7"></f7-icon>{{backTitle}}</f7-link>
+        <f7-link @click="onBack">
+          <f7-icon v-show="!editing" icon="icon-back">
+          </f7-icon>
+          &nbsp;{{backTitle}}
+        </f7-link>
       </f7-nav-left>
       <f7-nav-right>
         <f7-link @click="onEdit">{{editTitle}}</f7-link>

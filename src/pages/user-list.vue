@@ -5,8 +5,9 @@
     <f7-navbar sliding>
       <f7-nav-left>
         <f7-link back>
-          <f7-icon icon="icon-back" class="m-r-7"></f7-icon>
-          {{backTitle}}
+          <f7-icon icon="icon-back">
+          </f7-icon>
+          &nbsp;{{backTitle}}
         </f7-link>
       </f7-nav-left>
       <f7-nav-center>{{mainTitle}}</f7-nav-center>
