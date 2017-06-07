@@ -13,6 +13,10 @@ export default [
   },
   {
     path: '/workplan',
-    component: require('./pages/workplan.vue')
+    component: require('./pages/workplan-option.vue')
   },
+  {
+    path: '/workplan/:id',
+    component: require('./pages/workplan-list.vue')
+  }
 ]

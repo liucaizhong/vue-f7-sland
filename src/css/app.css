@@ -96,28 +96,28 @@ Your custom styles go here
   z-index: 999;
 }
 
-.workplan .item-content>.item-inner{
+.workplan-list .item-content>.item-inner{
   margin-left: 0;
 }
-.workplan .spinner {
+.workplan-list .spinner {
   top: 40%;
 }
 
-.workplan .page-content {
+.workplan-list .page-content {
   overflow-x: hidden;
 }
 
-.workplan li.li-transition {
+.workplan-list li.li-transition {
   transition: transform 0.3s linear;
   -webkit-transition: transform 0.3s linear;
 }
 
-.workplan .accordion-item-content {
+.workplan-list .accordion-item-content {
   -webkit-transform: none;
   transform: none;
 }
 
-.workplan .delete-btn{
+.workplan-list .delete-btn{
   font-size: 15px;
   width: 60px;
   height: 44px;
@@ -136,4 +136,28 @@ option[data-default] {
 
 .add-btn {
   display: inline;
+}
+
+.workplan-option .block-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.workplan-option .block-container .chip {
+  margin: 5px 5px;
+  flex: 1 0 30%;
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.workplan-option .block-container .chip:hover {
+  cursor: pointer;
+}
+
+.navbar a.link.active-state {
+  opacity: 1;
 }

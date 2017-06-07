@@ -49,7 +49,7 @@
 
 <script>
 import CompList from '@/pages/comp-list.vue'
-import Workplan from '@/pages/workplan.vue'
+import Workplan from '@/pages/workplan-option.vue'
 
 export default {
   data () {

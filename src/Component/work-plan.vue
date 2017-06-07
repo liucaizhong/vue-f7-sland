@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="work-plan">
     <f7-block-title>
-      <div @touchstart.prevent.stop="onAdd($event)" class="add-btn">
+      <div @click.prevent.stop="onAdd($event)" class="add-btn">
         <f7-icon
           v-show="editing"
           f7="add_round_fill"
@@ -24,7 +24,7 @@
         @accordion:open="onOpen($event)"
         @accordion:close="onClose($event)"
       >
-        <div slot="media" @touchstart.prevent.stop="onDel($event)">
+        <div slot="media" @click.prevent.stop="onDel($event)">
           <f7-icon
             v-show="editing"
             f7="delete_round_fill"
@@ -37,8 +37,9 @@
         <div
           slot="root"
           class="delete-btn"
-          @touchstart.stop="onConfirmDel($event)"
+          @click.stop="onConfirmDel($event)"
           :data-idx="key"
+          v-show="showDelBtn"
         >
           删除
         </div>
@@ -61,8 +62,28 @@
 export default {
   data () {
     return {
-
+      showDelBtn: false
     }
+  },
+  created () {
+    // register global click event handler
+    let $$ = this.$$
+    $$(document).on('click', (e)=>{
+      let delLi = $$("li.li-transition[style='transform: translateX(-60px);']")
+      let isDelBtn = $$(e.target).hasClass('delete-btn')
+      if(!isDelBtn && delLi.length) {
+        console.log('delete cancel')
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        this.showDelBtn = false
+        Array.prototype.forEach.call(delLi, (cur)=>{
+          cur.style.transform = 'translateX(0)'
+        })
+      }
+    }, {
+      capture: true,
+      passive: false
+    })
   },
   computed: {
     planItems: function () {
@@ -170,6 +191,7 @@ export default {
       return true
     },
     onDel (e) {
+      this.showDelBtn = true
       let parentLi = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
       console.dir(parentLi)
       parentLi.style.transform = 'translateX(-60px)'
