@@ -152,6 +152,11 @@ option[data-default] {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: #007aff;
+}
+
+.workplan-option .block-container .chip .badge {
+  background-color: #FF2E63;
 }
 
 .workplan-option .block-container .chip:hover {
@@ -160,4 +165,75 @@ option[data-default] {
 
 .navbar a.link.active-state {
   opacity: 1;
+}
+
+.work-plan .list-block .item-title.label {
+  width: 50%;
+}
+
+.home-page {
+  background-color: #FFF;
+}
+
+/*swiper*/
+.swiper-container {
+  position: relative;
+  height: 35%;
+}
+
+.swiper-slide {
+  background: #fff;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: none;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.swiper-pagination-bullet-active {
+  background: #007aff;
+  border-color: #007aff;
+}
+
+/*sudoku*/
+.sudoku-grids {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-left: 1px solid #D9D9D9;
+  border-top: 1px solid #D9D9D9;
+}
+
+/*.sudoku-grids > * {
+  color: black;
+}*/
+
+.sudoku-grid {
+  width: 33%;
+  text-align: center;
+  border-bottom: 1px solid #D9D9D9;
+  border-right: 1px solid #D9D9D9;
+  flex: 1 0 auto;
+}
+
+.sudoku-grid__icon {
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.sudoku-grid__icon > img {
+  width: 28px;
+  height: 28px;
+}
+
+.sudoku-grid__label {
+  margin-top: 5px;
+  margin-bottom: 20px;
 }

@@ -9,6 +9,9 @@ const urlMap = {
   '/insertcontact': 'http://slandasset.applinzi.com/contacts/API/insert.php',
   '/updatecontact': 'http://slandasset.applinzi.com/contacts/API/update.php',
   '/deletecontact': 'http://slandasset.applinzi.com/contacts/API/delete.php',
+  '/getemployees': 'http://slandasset.applinzi.com/workplan/API/getUsers.php',
+  '/getworkplan': 'http://slandasset.applinzi.com/workplan/API/getWP.php',
+  '/updateworkplan': 'http://slandasset.applinzi.com/workplan/API/updateWP.php',
 }
 
 function mapUrl(rawUrl) {
@@ -97,6 +100,28 @@ module.exports = () => {
   //delete contacts
   router.post('/deletecontact', (req, res) => {
     console.log('deletecontact start!')
+    let realUrl = mapUrl(req.url)
+    requestPost(realUrl, req, res)
+  })
+  //get employees of one specified department
+  router.get('/getemployees', (req, res) => {
+    console.log('getemployees start!')
+    let urlObj = url.parse(req.url)
+    let realUrl = mapUrl(urlObj.pathname)+'?'+urlObj.query
+    console.log(realUrl)
+    requestGet(realUrl, req, res)
+  })
+  //get an employee's workplan
+  router.get('/getworkplan', (req, res) => {
+    console.log('getworkplan start!')
+    let urlObj = url.parse(req.url)
+    let realUrl = mapUrl(urlObj.pathname)+'?'+urlObj.query
+    console.log(realUrl)
+    requestGet(realUrl, req, res)
+  })
+  //update an employee's workplan
+  router.post('/updateworkplan', (req, res) => {
+    console.log('updateworkplan start!')
     let realUrl = mapUrl(req.url)
     requestPost(realUrl, req, res)
   })

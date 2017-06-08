@@ -18,13 +18,13 @@
     </f7-block-title>
     <f7-block class="block-container">
       <div
-        class="chip bg-blue"
+        class="chip"
         v-for="item in value"
         @click="onNavTo($event, item.userId)"
       >
         <div class="chip-label">{{item.userName}}</div>
-        <div class="chip-media">
-          <span class="badge color-red">{{item.amount}}</span>
+        <div class="chip-media" v-if="item.amount">
+          <span class="badge">{{item.amount}}</span>
         </div>
       </div>
     </f7-block>
@@ -35,60 +35,62 @@
 <script>
 import { DEPARTMENTS } from '../constant.js'
 import { DEPARTMENTSDESC } from '../constant.js'
+import axios from 'axios'
 
 export default {
   data () {
     return {
       mainTitle: '工作计划',
       backTitle: '返回',
-      loading: false,
-      departments: DEPARTMENTS,
+      loading: true,
+      deps: DEPARTMENTS,
+      depsdesc: DEPARTMENTSDESC,
       members: {},
+      comp: '1', //南土资产
+      year: '',
+      quarter: '',
       isDev: process.env.NODE_ENV === 'development',
     }
   },
   created () {
+    // get loginfo
+    // will move to home-page in the further
+    let curUri = window.location.href
+    curUri = 'http://slandasset.applinzi.com/workplan/index.html?code=chenjw'//for test
+    console.log('curUri: '+curUri)
+    let patt = /code=(.*)/g
+    let userId = patt.exec(curUri)[1]
+    console.log(userId)
+    this.$store.commit('initUser', {
+      userId: userId
+    })
+    // set current year and quarter
+    let date = new Date()
+    this.year = date.getFullYear()
+    this.quarter = Math.floor(date.getMonth()/3)
     // axios to get members
-    //params: array[dep1, dep2, ...]r
-    // to do further
-    Object.assign(this.members, {
-      '研究部': [{
-        userId: '001',
-        userName: '刘1',
-        amount: '1'
-      },{
-        userId: '002',
-        userName: '刘2',
-        amount: '2'
-      },{
-        userId: '003',
-        userName: '刘3',
-        amount: '3'
-      },{
-        userId: '004',
-        userName: '刘4',
-        amount: '4'
-      },{
-        userId: '005',
-        userName: '刘5',
-        amount: '5'
-      },{
-        userId: '006',
-        userName: '刘6',
-        amount: '6'
-      },{
-        userId: '007',
-        userName: '刘7',
-        amount: '7'
-      },{
-        userId: '008',
-        userName: '刘8',
-        amount: '8'
-      },{
-        userId: '009',
-        userName: '刘9',
-        amount: '9'
-      }]
+    //params: array[dep1, dep2, ...]
+    let url = process.env.NODE_ENV === 'production'
+              ? 'http://slandasset.applinzi.com/workplan/API/getUsers.php'
+              : 'http://localhost:3000/getemployees'
+
+    axios.get(url,{
+      params: {
+        comp: this.comp,
+        deps: this.deps.map((cur) => {
+          return this.depsdesc[cur]
+        }).join(','),
+        year: this.year,
+        quarter: this.quarter
+      }
+    })
+    .then((response) => {
+      let dataObj = response.data
+      Object.assign(this.members, dataObj)
+      this.loading = false
+    })
+    .catch((error) => {
+      console.log(error)
     })
   },
   methods: {

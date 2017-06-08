@@ -91,4 +91,165 @@ npm run build
 * Delete => Params: id联系人惟一标识
 
 # workplan
-# json format
+* 通过token的方式传入登录用户的userId
+# ajax获取部门及其员工
+* params: comp='南土资产', deps=['r']
+* 为拓展性考虑，建议将公司Id或者名称也一并传入
+* 数组内存放部门名称英文首字母，如r代表研究部，后续可增加其他部门
+* results: 返回json对象，例子如下：
+* json format:
+  {
+    '研究部': [{
+      userId: '001', //用户唯一标识
+      userName: '刘1', //显示姓名
+      amount: '1' //当前季度的工作计划数量
+    },{
+      userId: '002',
+      userName: '刘2',
+      amount: '2'
+    },{
+      userId: '003',
+      userName: '刘3',
+      amount: '3'
+    },{
+      userId: '004',
+      userName: '刘4',
+      amount: '4'
+    },{
+      userId: '005',
+      userName: '刘5',
+      amount: '5'
+    },{
+      userId: '006',
+      userName: '刘6',
+      amount: '6'
+    },{
+      userId: '007',
+      userName: '刘7',
+      amount: '7'
+    },{
+      userId: '008',
+      userName: '刘8',
+      amount: '8'
+    },{
+      userId: '009',
+      userName: '刘9',
+      amount: '9'
+    }],
+    '投资部': [
+    ...
+    ],
+    ...
+  }
+# ajax 获取某个用户当前季度的工作计划
+* params: comp='南土资产',userId="0001", planType=['r', 's', 'i'], year='2017', quarter= [0,1,2,3]
+* 为拓展性考虑，建议将公司Id或者名称也一并传入
+* userId: 代表员工Id
+* planType:数组内存放工作计划类别英文首字母，如r代表调研计划，s代表个股报告计划，
+* 如i代表行业报告计划，后续可增加其他计划类别
+* year代表年度，如2017
+* quater代表季度，0代表第一季度，以此类推
+* results: 返回json对象，例子如下：
+* json format:
+{
+  'r': [{
+    id: '001', //记录的唯一标识
+    comp: '中航机电',
+    date: '2017.12.01',
+    event: '期待上涨'
+  },{
+    id: '002',
+    comp: '中航飞机',
+    date: '2017.11.01',
+    event: '期待上涨'
+  },{
+    id: '003',
+    comp: '中直股份',
+    date: '2017.10.01',
+    event: '期待上涨'
+  }],
+  's': [{
+    id: '004',
+    stock: '中航机电',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  },{
+    id: '005',
+    stock: '中直股份',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  }],
+  'i': [{
+    id: '006',
+    indus: '军工',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  },{
+    id: '007',
+    indus: '电子',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  }]
+}
+# json api for 工作计划
+* Insert,Update,Delete => Params: JSON Object  // 可调整
+{
+  'r': [{
+    id: '001', // 更新
+    comp: '中航机电',
+    date: '2017.12.01',
+    event: '期待上涨'
+  },{
+    id: '001', // 删除
+  }，{
+    id: '' or undefined, // 新增
+    comp: '中航机电',
+    date: '2017.12.01',
+    event: '期待上涨'
+  }],
+  's': [{
+    id: '004', // 更新
+    stock: '中航机电',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  },{
+    id: '005', // 删除
+  },{
+    id: '' or undefined, // 新增
+    stock: '中航机电',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  }],
+  'i': [{
+    id: '006', // 更新
+    indus: '军工',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  },{
+    id: '007', // 删除
+  },{
+    id: '' or undefined, // 新增
+    indus: '军工',
+    finishDate: '2017.12.01',
+    reportDate: '2017.12.31'
+  }]
+}
+
+# ajax 获取某个用户当前季度的工作计划完成情况
+* params: comp='南土资产',userId="0001", planType=['r', 's', 'i'], year='2017', quarter= [0,1,2,3]
+* 为拓展性考虑，建议将公司Id或者名称也一并传入
+* userId: 代表员工Id
+* planType:数组内存放工作计划类别英文首字母，如r代表调研计划，s代表个股报告计划，
+* 如i代表行业报告计划，后续可增加其他计划类别
+* year代表年度，如2017
+* quater代表季度，0代表第一季度，以此类推
+* results: 返回json对象，例子如下：
+* json format: (暂定，可调整)
+{
+  day="21" // 日期
+  month="DEC" // 月份
+  time="12:56" // 时间
+  title="Item Title" //标题
+  subtitle="Item Subtitle" //副标题
+  text="Lorem ipsum dol" //正文
+}

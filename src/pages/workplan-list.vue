@@ -40,7 +40,6 @@
           :editing="editing"
           :formContent="configForm(value)"
           :planTitle="configTitle(value)"
-          :showDelBtn="showDelBtn"
         >
         </work-plan>
       </f7-tab>
@@ -56,8 +55,10 @@
 
 <script>
 import { PLANTYPES } from '../constant.js'
+import Common from '../tools.js'
 import WorkPlan from '@/Component/work-plan.vue'
 import TaskProgress from '@/Component/task-progress.vue'
+import axios from 'axios'
 
 export default {
   data () {
@@ -69,7 +70,8 @@ export default {
       year: '',
       quarter: '',
       editing: false,
-      hasAuthority: true,
+      // hasAuthority: true,
+      curUserId: '',
       types: PLANTYPES,
       isDev: process.env.NODE_ENV === 'development'
     }
@@ -79,28 +81,27 @@ export default {
     let date = new Date()
     this.year = date.getFullYear()
     this.quarter = Math.floor(date.getMonth()/3)
+    this.curUserId = this.$route.params.id
+    // get workplan
+    let url = process.env.NODE_ENV === 'production'
+              ? 'http://slandasset.applinzi.com/workplan/API/getWP.php'
+              : 'http://localhost:3000/getworkplan'
 
-    // get loginfo and workplan
-    // to do further
-    this.$store.commit('init', {
-      [this.types[0]]: [{
-        id: '001',
-        comp: '中航机电',
-        date: '2017.12.01',
-        event: '期待上涨'
-      },{
-        id: '002',
-        comp: '中航飞机',
-        date: '2017.11.01',
-        event: '期待上涨'
-      },{
-        id: '003',
-        comp: '中直股份',
-        date: '2017.10.01',
-        event: '期待上涨'
-      }],
-      [this.types[1]]: [],
-      [this.types[2]]: []
+    axios.get(url,{
+      params: {
+        userId: this.curUserId,
+        year: this.year,
+        quarter: this.quarter
+      }
+    })
+    .then((response) => {
+      let dataObj = JSON.parse(response.data)
+      console.dir(dataObj)
+      this.$store.commit('initPlan', dataObj)
+      this.loading = false
+    })
+    .catch((error) => {
+      console.log(error)
     })
 
   },
@@ -111,6 +112,10 @@ export default {
     editTitle: function () {
       return this.editing ? '保存' : '编辑'
     },
+    hasAuthority: function () {
+      return true //for test, will be commented in the future
+      // return !this.curUserId.localeCompare(this.$store.state.loginfo.userInfo.userId)
+    },
   },
   methods: {
     onEdit () {
@@ -120,10 +125,52 @@ export default {
         f7.accordionClose(expandedAccordion)
       }
       if(this.editing) {
-        // axios send request
-        // todo...
-        this.$store.commit('save')
-        this.editing = !this.editing
+        // axios send request and eliminate empty object
+        let workplan = Object.assign({}, this.$store.state.workplan)
+        let updObj = this.types.map((cur) => {
+          let willUpdPlan = workplan[cur].willUpdPlan
+          willUpdPlan.forEach((val, idx) => {
+            if(Common.isEmptyObject(val)) {
+              cur.splice(idx, 1)
+            }
+          })
+          return {
+            [cur]: willUpdPlan
+          }
+        }).reduce((total, cur) => {
+          return Object.assign(total, cur)
+        }, {})
+
+        let url = process.env.NODE_ENV === 'production'
+                  ? 'http://slandasset.applinzi.com/workplan/API/updateWP.php'
+                  : 'http://localhost:3000/updateworkplan'
+
+        let updData =  Object.assign({
+          userID: this.curUserId,
+          year: this.year,
+          quarter: +this.quarter+1,
+        }, updObj)
+
+        console.dir(updData)
+
+        axios.post(url, updData, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        })
+        .then((response) => {
+          console.log('response back!')
+          console.dir(response)
+          let res = JSON.parse(response.data)
+          console.dir(res)
+          this.$store.commit('initPlan', res)
+          this.loading = false
+          this.editing = !this.editing
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
       }
       else {
         this.editing = !this.editing
@@ -137,7 +184,7 @@ export default {
       }
       if(this.editing) {
         this.editing = !this.editing
-        this.$store.commit('cancel')
+        this.$store.commit('cancelPlan')
       }
       else {
         this.$router.back()
@@ -158,10 +205,28 @@ export default {
           }]
           break
         case this.types[1]:
-
+          return [{
+            name: 'stock',
+            desc: '个股名称'
+          },{
+            name: 'finishDate',
+            desc: '预计完成时间'
+          },{
+            name: 'reportDate',
+            desc: '预计汇报时间'
+          }]
           break
         case this.types[2]:
-
+          return [{
+            name: 'indus',
+            desc: '行业主题'
+          },{
+            name: 'finishDate',
+            desc: '预计完成时间'
+          },{
+            name: 'reportDate',
+            desc: '预计汇报时间'
+          }]
           break
       }
     },
@@ -171,10 +236,10 @@ export default {
           return '调研计划'
           break
         case this.types[1]:
-
+          return '个股报告计划'
           break
         case this.types[2]:
-
+          return '行业报告计划'
           break
       }
     }

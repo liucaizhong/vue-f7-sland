@@ -12,26 +12,20 @@ types.forEach((cur) => {
 const state = {...preState}
 
 const mutations = {
-  init (state, payload) {
+  initPlan (state, payload) {
     for (let k in payload) {
       state[k].curPlan = [...payload[k]]
       state[k].bakPlan = [...payload[k]]
+      state[k].willUpdPlan = []
     }
   },
-  save (state, payload) {
-    // for test
-    for(let type in state) {
-      state[type].bakPlan = [...state[type].curPlan]
-      state[type].willUpdPlan = []
-    }
-  },
-  cancel (state) {
+  cancelPlan (state) {
     for(let type in state) {
       state[type].curPlan = [...state[type].bakPlan]
       state[type].willUpdPlan = []
     }
   },
-  prepare (state, payload) {
+  preparePlan (state, payload) {
     let lastIdx = state[payload.type].bakPlan.length
     let curIdx = payload.idx || lastIdx
     if(payload.method === 'delete') {

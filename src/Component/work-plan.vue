@@ -10,13 +10,14 @@
         </f7-icon>
       </div>
       {{planTitle}}
+      <div v-if="!planItemsLength">{{subTitle}}</div>
     </f7-block-title>
     <f7-list accordion>
       <f7-list-item
         accordion-item
         v-for="(value, key) in planItems"
         v-if="value !== undefined"
-        :title="value.date+' '+value.comp"
+        :title="(value[formContent[1].name] || '')+' '+(value[formContent[0].name] || '')"
         :data-id="value.id"
         :data-idx="key"
         :data-type="planType"
@@ -59,10 +60,13 @@
 </template>
 
 <script>
+import Common from '../tools.js'
+
 export default {
   data () {
     return {
-      showDelBtn: false
+      showDelBtn: false,
+      subTitle: '（待添加）'
     }
   },
   created () {
@@ -88,6 +92,9 @@ export default {
   computed: {
     planItems: function () {
       return this.$store.state.workplan[this.planType].curPlan
+    },
+    planItemsLength: function () {
+      return this.$store.state.workplan[this.planType].curPlan.length
     }
   },
   props: {
@@ -109,20 +116,17 @@ export default {
     onAdd (e) {
       console.log('add new research plan')
       // this.$router.loadPage('/workplan/'+t+'/new')
-      let date = new Date()
-      let year = date.getFullYear()
-      let month = date.getMonth()+1
-      month = month < 10 ? '0'+month: month
-      let day = date.getDate()
-      day = day < 10 ? '0'+day: day
-      let fullDate = [year, month, day].join('.')
-      this.$store.commit('prepare', {
+      // let date = new Date()
+      // let year = date.getFullYear()
+      // let month = date.getMonth()+1
+      // month = month < 10 ? '0'+month: month
+      // let day = date.getDate()
+      // day = day < 10 ? '0'+day: day
+      // let fullDate = [year, month, day].join('.')
+      this.$store.commit('preparePlan', {
         method: 'insert',
         data: {
           id: undefined,
-          comp: '',
-          date: fullDate,
-          event: ''
         },
         idx: undefined,
         type: this.planType
@@ -162,10 +166,11 @@ export default {
         let preFormDataObj = JSON.parse(preFormData)
         console.dir(curFormDataObj)
         console.dir(preFormDataObj)
-        if(!this.isSameObject(preFormDataObj, curFormDataObj)) {
+        console.dir(Common)
+        if(!Common.isSameObject(preFormDataObj, curFormDataObj)) {
           console.log('update begin')
           target.setAttribute('data-content', JSON.stringify(curFormDataObj))
-          this.$store.commit('prepare', {
+          this.$store.commit('preparePlan', {
             method: 'update',
             data: curFormDataObj,
             idx: dataAttr.idx,
@@ -174,21 +179,6 @@ export default {
         }
       }
       console.dir(e.target)
-    },
-    //compare plain object
-    isSameObject (a, b) {
-      if(Object.keys(a).length !== Object.keys(b).length) {
-        return false
-      }
-      for(let k in a) {
-        if(b[k] === undefined) {
-          return false
-        }
-        if(a[k] !== b[k]) {
-          return false
-        }
-      }
-      return true
     },
     onDel (e) {
       this.showDelBtn = true
@@ -210,7 +200,7 @@ export default {
         delLi.removeAttribute('class')
         delLi.setAttribute('class', 'li-transition')
         delLi.style.transform = 'translateX(0px)'
-        this.$store.commit('prepare', {
+        this.$store.commit('preparePlan', {
           method: 'delete',
           data: {
             id: dataAttr.id

@@ -18,5 +18,9 @@ export default [
   {
     path: '/workplan/:id',
     component: require('./pages/workplan-list.vue')
+  },
+  {
+    path: '/conf',
+    component: require('./pages/auto-conf.vue')
   }
 ]

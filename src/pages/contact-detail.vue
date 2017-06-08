@@ -9,6 +9,7 @@
           &nbsp;{{backTitle}}
         </f7-link>
       </f7-nav-left>
+      <f7-nav-center>{{mainTitle}}</f7-nav-center>
       <f7-nav-right>
         <f7-link @click="onEdit">{{editTitle}}</f7-link>
       </f7-nav-right>
@@ -85,7 +86,8 @@ export default {
       nameInput: '',
       phoneError: false,
       phoneErrMsg: '',
-      phoneInput: ''
+      phoneInput: '',
+      mainTitle: '联系人'
     }
   },
   created () {
