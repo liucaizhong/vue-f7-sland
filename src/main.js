@@ -31,8 +31,8 @@ import store from './store'
 import App from './app'
 
 // Import polyfill fastclick
-import FastClick from 'fastclick'
-FastClick.attach(document.body)
+// import FastClick from 'fastclick'
+// FastClick.attach(document.body)
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue)

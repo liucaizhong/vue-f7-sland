@@ -253,3 +253,71 @@ npm run build
   subtitle="Item Subtitle" //副标题
   text="Lorem ipsum dol" //正文
 }
+
+# 会议列表信息
+* params: comp='南土资产', begin='20170606', end='20170707'
+# json format
+{
+  '20170606': [{
+    title: '东方环保-格林美荆门基地联合调研',
+    time: '10:00',
+    place: '荆门市高新技术产业开发区迎春大道',
+    guests: '董秘',
+    contacts: [{
+      person: '卢日鑫',
+      phone: '18801969783'
+    }, {
+      person: '谢超波',
+      phone: ''
+    }, {
+      person: '林清华',
+      phone: ''
+    }, {
+      person: '徐浩涵',
+      phone: ''
+    }]
+  }, {
+    title: '东方电子-瑞丰光电联合调研',
+    time: '14:30',
+    place: '深圳市福田区马哥孛罗好日子酒店 芝加哥厅+迈阿密厅',
+    guests: '总裁、副总裁等',
+    contacts: [{
+      person: '蒯剑',
+      phone: '18621367088'
+    }, {
+      person: '王若擎',
+      phone: '18321255549'
+    }]
+  }],
+  '20170607': [{
+    title: '东方电子-鼎信通讯联合调研',
+    time: '10:00',
+    place: '青岛市市南区宁夏路288号6号楼5层',
+    guests: '董秘',
+    contacts: [{
+      person: '马天翼',
+      phone: '13524065406'
+    }]
+  }, {
+    title: '东方电子-华灿光电联合调研',
+    time: '10:00',
+    place: '张家港',
+    guests: '总经理、micro-led相关负责人',
+    contacts: [{
+      person: '王芳',
+      phone: '18916064780'
+    }]
+  }, {
+    title: '东方计算机-和创科技联合调研',
+    time: '14:40',
+    place: '北京市西城区十月大厦8层',
+    guests: 'CEO刘学臣、CTO金晨、CFO胡奎、新华都商学院院长何志毅、东方富海合伙人陈利伟、昆仲资本合伙人梁隽樟等',
+    contacts: [{
+      person: '浦俊懿',
+      phone: ''
+    }, {
+      person: '游涓洋',
+      phone: '18910169618'
+    }]
+  }]
+}

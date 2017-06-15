@@ -22,5 +22,9 @@ export default [
   {
     path: '/conf',
     component: require('./pages/auto-conf.vue')
+  },
+  {
+    path: '/confres',
+    component: require('./pages/conf-image.vue')
   }
 ]

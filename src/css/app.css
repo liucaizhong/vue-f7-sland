@@ -163,7 +163,8 @@ option[data-default] {
   cursor: pointer;
 }
 
-.navbar a.link.active-state {
+.navbar a.link.active-state,
+.toolbar a.link.active-state {
   opacity: 1;
 }
 
@@ -176,16 +177,16 @@ option[data-default] {
 }
 
 /*swiper*/
-.swiper-container {
+.home-page .swiper-container {
   position: relative;
   height: 35%;
 }
 
-.swiper-slide {
+.home-page .swiper-slide {
   background: #fff;
 }
 
-.swiper-pagination-bullet {
+.home-page .swiper-pagination-bullet {
   width: 8px;
   height: 8px;
   background: none;
@@ -195,7 +196,7 @@ option[data-default] {
   cursor: pointer;
 }
 
-.swiper-pagination-bullet-active {
+.home-page .swiper-pagination-bullet-active {
   background: #007aff;
   border-color: #007aff;
 }
@@ -236,4 +237,307 @@ option[data-default] {
 .sudoku-grid__label {
   margin-top: 5px;
   margin-bottom: 20px;
+}
+
+.conf-image .page-content {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* screen responsive implementation for image */
+.conf-image .image-content {
+  background-color: #FFF;
+  width: 360px;
+  overflow-y: auto;
+  padding-bottom: 50px;
+}
+
+.conf-image .image-content li {
+  list-style: none;
+}
+
+.conf-image .image-content .content {
+  padding-left: 0px;
+}
+
+.conf-image .image-content ul {
+  padding-left: 0px;
+}
+
+.conf-image .image-content .content .outer-li {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-bottom: 5px;
+}
+
+.conf-image .image-content .content .date {
+  font-size: 12px;
+  padding: 1px 0px;
+  text-align: center;
+}
+
+.conf-image .image-content .content .outer-li header {
+  flex: 0 0 50px;
+  margin-right: 1px;
+}
+
+.conf-image .image-content .content .outer-li ul {
+  flex: 0 0 290px;
+}
+
+.conf-image .image-content .content .inner-li {
+  margin-bottom: 10px;
+}
+
+.conf-image .image-content .content .inner-li h2 {
+  color: #BD0927;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #BD0927;
+  font-size: 12px;
+}
+
+.conf-image .image-content .content .inner-li .infos {
+  font-size: 12px;
+}
+
+.conf-image .image-content .content .inner-li .infos .row-0 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.conf-image .image-content .content .inner-li .infos .row-0 .time {
+  flex: 0 0 80px;
+  margin-right: 0px;
+}
+
+.conf-image .image-content .content .inner-li .infos .row-0,
+.conf-image .image-content .content .inner-li .infos .row-1,
+.conf-image .image-content .content .inner-li .infos .row-2 {
+  margin-bottom: 5px;
+}
+
+.conf-image .image-content .content .title {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.conf-image .image-content .content .date {
+  color: #FFF;
+  background-color: #BD0927;
+}
+
+.conf-image .image-content .header {
+  background-image: url(../../static/conf-header.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 360px;
+  height: 160px;
+  position: relative;
+}
+
+.conf-image .image-content .header .rangeTitle {
+  position: absolute;
+  color: #FFF;
+  font-size: 12px;
+  top: 50px;
+  left: 205px;
+}
+
+.conf-image .image-content .footer {
+  background-image: url(../../static/conf-footer.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 96px;
+  height: 39px;
+  margin: 0 auto;
+}
+
+@media (min-width: 544px) {
+  .conf-image .image-content {
+    background-color: #FFF;
+    width: 544px;
+  }
+
+  .conf-image .image-content .header {
+    background-image: url(../../static/conf-header.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 544px;
+    height: 246px;
+    position: relative;
+  }
+
+  .conf-image .image-content .header .rangeTitle {
+    position: absolute;
+    color: #FFF;
+    font-size: 16px;
+    top: 79px;
+    left: 315px;
+  }
+
+  .conf-image .image-content .content {
+    padding-left: 0px;
+  }
+
+  .conf-image .image-content ul {
+    padding-left: 10px;
+  }
+
+  .conf-image .image-content .content .date {
+    font-size: 15px;
+    padding: 5px 10px;
+  }
+
+  .conf-image .image-content .content .outer-li header {
+    flex: 0 0 80px;
+  }
+
+  .conf-image .image-content .content .outer-li ul {
+    flex: 0 0 410px;
+  }
+
+  .conf-image .image-content .content .inner-li h2 {
+    font-size: 15px;
+  }
+
+  .conf-image .image-content .content .inner-li .infos {
+    font-size: 13px;
+  }
+
+  .conf-image .image-content .content .outer-li {
+    margin-bottom: 5px;
+  }
+
+  .conf-image .image-content .content .inner-li .infos .row-0 .time {
+    flex: 0 0 80px;
+    margin-right: 30px;
+  }
+
+  .conf-image .image-content .footer {
+    width: 145px;
+    height: 60px;
+  }
+}
+
+@media (min-width: 768px) {
+  .conf-image .image-content {
+    background-color: #FFF;
+    width: 768px;
+  }
+
+  .conf-image .image-content .header {
+    background-image: url(../../static/conf-header.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 768px;
+    height: 342px;
+    position: relative;
+  }
+
+  .conf-image .image-content .header .rangeTitle {
+    position: absolute;
+    color: #FFF;
+    font-size: 21px;
+    top: 108px;
+    left: 445px;
+  }
+
+  .conf-image .image-content .content {
+    padding-left: 0px;
+  }
+
+  .conf-image .image-content .content .date {
+    font-size: 17px;
+    padding: 5px 18px;
+  }
+
+  .conf-image .image-content .content .outer-li header {
+    flex: 0 0 100px;
+  }
+
+  .conf-image .image-content .content .outer-li ul {
+    flex: 0 0 520px;
+  }
+
+  .conf-image .image-content .content .inner-li h2 {
+    font-size: 20px;
+  }
+
+  .conf-image .image-content .content .inner-li .infos {
+    font-size: 15px;
+  }
+
+  .conf-image .image-content .content .outer-li {
+    margin-bottom: 16px;
+  }
+
+  .conf-image .image-content .content .inner-li .infos .row-0 .time {
+    flex: 0 0 100px;
+    margin-right: 60px;
+  }
+
+  .conf-image .image-content .footer {
+    width: 205px;
+    height: 84px;
+  }
+}
+
+@media (min-width: 992px) {
+  .conf-image .image-content {
+    background-color: #FFF;
+    width: 886px;
+  }
+
+  .conf-image .image-content .header {
+    background-image: url(../../static/conf-header.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 886px;
+    height: 394px;
+    position: relative;
+  }
+
+  .conf-image .image-content .header .rangeTitle {
+    position: absolute;
+    color: #FFF;
+    font-size: 23px;
+    top: 126px;
+    left: 520px;
+  }
+
+  .conf-image .image-content .content {
+    padding-left: 50px;
+  }
+
+  .conf-image .image-content .content .date {
+    font-size: 23px;
+    padding: 5px 10px;
+  }
+
+  .conf-image .image-content .content .outer-li header {
+    flex: 0 0 140px;
+  }
+
+  .conf-image .image-content .content .outer-li ul {
+    flex: 0 0 600px;
+  }
+
+  .conf-image .image-content .content .inner-li h2 {
+    font-size: 23px;
+  }
+
+  .conf-image .image-content .content .inner-li .infos {
+    font-size: 18px;
+  }
+
+  .conf-image .image-content .content .outer-li {
+    margin-bottom: 20px;
+  }
+
+  .conf-image .image-content .footer {
+    width: 236px;
+    height: 97px;
+  }
+
 }

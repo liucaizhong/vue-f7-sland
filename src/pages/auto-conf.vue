@@ -18,30 +18,113 @@
         <f7-input
           type="text"
           placeholder="选择会议的时间范围"
-          readonly
           id="date-range"
           name="date-range"
+          readonly
         />
       </f7-list-item>
     </f7-list>
 
     <f7-block>
-      <f7-button fill color="blue" @click="onGenPic($event)">生成截图</f7-button>
+      <f7-button fill color="blue" @click="onGenTable($event)">生成列表</f7-button>
     </f7-block>
+
+    <div class="data-table data-table-init card" v-show="showTable">
+      <!-- Card header -->
+      <div class="card-header">
+        <!-- Default table header -->
+        <div class="data-table-header">
+          <div class="data-table-title">会议列表</div>
+          <div class="data-table-actions">
+            <!-- to perfect further -->
+            <!-- <a class="link icon-only" @click="onDownloadExcel($event)">
+              <i class="icon f7-icons">cloud_download</i>
+            </a> -->
+            <a class="link icon-only" @click="onGenPic($event)">
+              <i class="icon f7-icons">forward</i>
+            </a>
+          </div>
+        </div>
+        <!-- Selected table header -->
+        <div class="data-table-header-selected">
+          <div class="data-table-title-selected">
+            <span class="data-table-selected-count"></span>
+            条记录被选中
+          </div>
+          <div class="data-table-actions">
+            <a class="link icon-only" @click="onDel($event)">
+              <i class="icon f7-icons">trash</i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <table id="conf-table">
+          <thead>
+            <tr>
+              <th class="checkbox-cell">
+                <label class="form-checkbox">
+                  <input type="checkbox"><i></i>
+                </label>
+              </th>
+              <th class="label-cell">日期</th>
+              <th class="label-cell">主题</th>
+              <th class="label-cell">时间</th>
+              <th class="label-cell">地点</th>
+              <th class="label-cell">电话</th>
+              <th class="label-cell">嘉宾</th>
+              <th class="label-cell">联系人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(value, index) in tableData"
+              :data-idx="value.idx"
+              :data-key="value.date"
+            >
+              <td class="checkbox-cell">
+                <label class="form-checkbox">
+                  <input type="checkbox"><i></i>
+                </label>
+              </td>
+              <td class="label-cell">{{value.date}}</td>
+              <td class="label-cell">{{value.title}}</td>
+              <td class="label-cell">{{value.time}}</td>
+              <td class="label-cell">{{value.place}}</td>
+              <td class="label-cell">{{value.dial}}</td>
+              <td class="label-cell">{{value.guests}}</td>
+              <td class="label-cell">{{getContactsString(value.contacts)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </f7-page>
+
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data () {
     return {
       backTitle: '返回',
       mainTitle: '会务',
-      dateRange: undefined
+      dateRange: null,
+      showTable: false,
+      begin: '',
+      end: '',
+    }
+  },
+  computed: {
+    tableData: function () {
+      return this.objToTable(this.$store.state.conference.conf_list)
     }
   },
   mounted () {
-    let f7 = this.$f7
+    let f7 = this.$f7 || new Framework7()
     this.dateRange = f7.calendar({
         input: '#date-range',
         dateFormat: 'M dd yyyy',
@@ -50,14 +133,117 @@ export default {
     })
   },
   methods: {
-    onGenPic (e) {
-      console.log('generate picture begin')
+    onGenTable (e) {
+      console.log('generate table begin')
+      this.showTable = false
       // get date obj
-      let begin = this.dateRange.value[0]
-      let end = this.dateRange.value[1]
-      // axios get data and generate picture
-      // to do later
-    }
+      let dateRange = this.dateRange.value
+      if(dateRange) {
+        this.begin = dateRange[0]
+        this.end = dateRange[1]
+        let beginString = this.formatDate(this.begin)
+        let endString = this.formatDate(this.end)
+
+        // axios get data
+        let url = process.env.NODE_ENV === 'production'
+                  ? 'http://wwy94621.sinaapp.com/agenda/convert.php'
+                  : 'http://localhost:3000/getconference'
+
+        axios.get(url, {
+          params: {
+            comp: '1',
+            begin: beginString,
+            end: endString
+          }
+        })
+        .then((response) => {
+          let dataObj = response.data
+          console.dir(response)
+          if (dataObj) {
+            this.$store.commit('initConf', {
+              data: dataObj
+            })
+
+            this.showTable = true
+          }
+          else {
+            this.$f7.alert('没有会议记录！', '')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+      }
+
+    },
+    objToTable(obj) {
+      let data = []
+      for(let key in obj) {
+        obj[key].forEach((cur, idx) => {
+          if(cur) {
+            data.push(Object.assign({}, cur, {
+              date: key,
+              idx: idx
+            }))
+          }
+        })
+      }
+      return data
+    },
+    getContactsString(contacts) {
+      return contacts.map((cur) => {
+        return cur.person+cur.phone
+      }).join('/')
+    },
+    onDel (e) {
+      let selectedRow = document.querySelectorAll('.form-checkbox input[type=checkbox]:checked')
+      // console.dir(selectedRow)
+      if(selectedRow && selectedRow.length) {
+        this.$$('div.data-table.data-table-init.card.data-table-has-checked').removeClass('data-table-has-checked')
+        let prepare = []
+        Array.prototype.forEach.call(selectedRow, (cur) => {
+          cur.checked = false
+          let tr = cur.parentElement.parentElement.parentElement
+          let dataAttr = tr.dataset
+          if(dataAttr.key || dataAttr.idx) {
+            prepare.push(dataAttr)
+          }
+
+        })
+        this.$store.commit('delConf', prepare)
+      }
+
+    },
+    onGenPic (e) {
+      if(this.tableData.length) {
+        let router = this.$router || this.$f7.mainView.router
+        router.load({
+          url: '/confres',
+          query: {
+            begin: this.begin,
+            end: this.end
+          }
+        })
+      }
+      else {
+        this.$f7.alert('没有会议记录！', '')
+      }
+    },
+    formatDate (obj) {
+      let year = obj.getFullYear()
+      let month = obj.getMonth() + 1
+      month = month > 10 ? month : '0'+ month
+      let day = obj.getDate()
+      day = day > 10 ? day : '0' + day
+      return year+month+day
+    },
+    // onDownloadExcel (e) {
+    //   console.log('begin download excel')
+    //   let htmltable= document.getElementById('conf-table');
+    //   let html = htmltable.outerHTML;
+    //   window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+    // },
   }
 }
 </script>

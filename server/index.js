@@ -12,6 +12,7 @@ const urlMap = {
   '/getemployees': 'http://slandasset.applinzi.com/workplan/API/getUsers.php',
   '/getworkplan': 'http://slandasset.applinzi.com/workplan/API/getWP.php',
   '/updateworkplan': 'http://slandasset.applinzi.com/workplan/API/updateWP.php',
+  '/getconference': 'http://wwy94621.sinaapp.com/agenda/convert.php',
 }
 
 function mapUrl(rawUrl) {
@@ -80,7 +81,9 @@ module.exports = () => {
   //get contacts
   router.get('/getcontact', (req, res) => {
     console.log('getcontact start!')
-    let realUrl = mapUrl(req.url)
+    let urlObj = url.parse(req.url)
+    urlObj.pathname = mapUrl(urlObj.pathname)
+    let realUrl = url.format(urlObj)
     requestGet(realUrl, req, res)
   })
   //insert contacts
@@ -107,7 +110,8 @@ module.exports = () => {
   router.get('/getemployees', (req, res) => {
     console.log('getemployees start!')
     let urlObj = url.parse(req.url)
-    let realUrl = mapUrl(urlObj.pathname)+'?'+urlObj.query
+    urlObj.pathname = mapUrl(urlObj.pathname)
+    let realUrl = url.format(urlObj)
     console.log(realUrl)
     requestGet(realUrl, req, res)
   })
@@ -115,7 +119,8 @@ module.exports = () => {
   router.get('/getworkplan', (req, res) => {
     console.log('getworkplan start!')
     let urlObj = url.parse(req.url)
-    let realUrl = mapUrl(urlObj.pathname)+'?'+urlObj.query
+    urlObj.pathname = mapUrl(urlObj.pathname)
+    let realUrl = url.format(urlObj)
     console.log(realUrl)
     requestGet(realUrl, req, res)
   })
@@ -124,6 +129,15 @@ module.exports = () => {
     console.log('updateworkplan start!')
     let realUrl = mapUrl(req.url)
     requestPost(realUrl, req, res)
+  })
+  //get conference list
+  router.get('/getconference', (req, res) => {
+    console.log('getconference start!')
+    let urlObj = url.parse(req.url)
+    urlObj.pathname = mapUrl(urlObj.pathname)
+    let realUrl = url.format(urlObj)
+    console.log(realUrl)
+    requestGet(realUrl, req, res)
   })
 
   return router

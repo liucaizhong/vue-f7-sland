@@ -95,7 +95,8 @@ export default {
       }
     })
     .then((response) => {
-      let dataObj = JSON.parse(response.data)
+      console.dir(response)
+      let dataObj = response.data
       console.dir(dataObj)
       this.$store.commit('initPlan', dataObj)
       this.loading = false
@@ -146,9 +147,9 @@ export default {
                   : 'http://localhost:3000/updateworkplan'
 
         let updData =  Object.assign({
-          userID: this.curUserId,
+          userId: this.curUserId,
           year: this.year,
-          quarter: +this.quarter+1,
+          quarter: this.quarter,
         }, updObj)
 
         console.dir(updData)

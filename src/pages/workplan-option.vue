@@ -2,7 +2,7 @@
 <f7-page class="workplan-option">
   <f7-navbar sliding>
     <f7-nav-left>
-      <f7-link @click="onBack">
+      <f7-link back>
         <f7-icon icon="icon-back">
         </f7-icon>
         {{backTitle}}
@@ -94,17 +94,18 @@ export default {
     })
   },
   methods: {
-    onBack () {
-      if(this.isDev) {
-        this.$router.back()
-      }
-      else {
-        window.location.href = '/index.php'
-      }
-    },
+    // onBack () {
+      // if(this.isDev) {
+        // this.$router.back()
+      // }
+      // else {
+      //   window.location.href = '/index.php'
+      // }
+    // },
     onNavTo (e, userId) {
       console.log(userId)
-      this.$router.load({
+      let router = this.$router || this.$f7.mainView.router
+      router.load({
         url: '/workplan/' + userId
       })
     }
