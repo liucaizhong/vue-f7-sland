@@ -4,15 +4,18 @@ const url = require('url')
 // const querystring = require('querystring')
 const router = express.Router()
 
+const slandUrl = 'http://slandasset.appchizi.com'
+const orientUrl = 'http://wwy94621.sinaapp.com'
+
 const urlMap = {
-  '/getcontact': 'http://slandasset.applinzi.com/contacts/API/get.php',
-  '/insertcontact': 'http://slandasset.applinzi.com/contacts/API/insert.php',
-  '/updatecontact': 'http://slandasset.applinzi.com/contacts/API/update.php',
-  '/deletecontact': 'http://slandasset.applinzi.com/contacts/API/delete.php',
-  '/getemployees': 'http://slandasset.applinzi.com/workplan/API/getUsers.php',
-  '/getworkplan': 'http://slandasset.applinzi.com/workplan/API/getWP.php',
-  '/updateworkplan': 'http://slandasset.applinzi.com/workplan/API/updateWP.php',
-  '/getconference': 'http://wwy94621.sinaapp.com/agenda/convert.php',
+  '/getcontact': slandUrl+'/contacts/API/get.php',
+  '/insertcontact': slandUrl+'/contacts/API/insert.php',
+  '/updatecontact': slandUrl+'/contacts/API/update.php',
+  '/deletecontact': slandUrl+'/contacts/API/delete.php',
+  '/getemployees': slandUrl+'/workplan/API/getUsers.php',
+  '/getworkplan': slandUrl+'/workplan/API/getWP.php',
+  '/updateworkplan': slandUrl+'/workplan/API/updateWP.php',
+  '/getconference': orientUrl+'/agenda/convert.php',
 }
 
 function mapUrl(rawUrl) {

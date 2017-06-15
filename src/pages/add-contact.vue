@@ -134,7 +134,7 @@ export default {
         let f7 = this.$f7
         let formData = f7.formToData('#add-form')
         let url = process.env.NODE_ENV === 'production'
-                  ? 'http://slandasset.applinzi.com/contacts/API/insert.php'
+                  ? './API/insert.php'
                   : 'http://localhost:3000/insertcontact'
 
         let pinyinOfName = pinyin.getCamelChars(this.nameInput)

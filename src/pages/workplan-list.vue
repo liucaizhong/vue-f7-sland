@@ -84,7 +84,7 @@ export default {
     this.curUserId = this.$route.params.id
     // get workplan
     let url = process.env.NODE_ENV === 'production'
-              ? 'http://slandasset.applinzi.com/workplan/API/getWP.php'
+              ? './API/getWP.php'
               : 'http://localhost:3000/getworkplan'
 
     axios.get(url,{

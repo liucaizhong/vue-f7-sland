@@ -71,7 +71,7 @@ export default {
     // axios to get members
     //params: array[dep1, dep2, ...]
     let url = process.env.NODE_ENV === 'production'
-              ? 'http://slandasset.applinzi.com/workplan/API/getUsers.php'
+              ? './API/getUsers.php'
               : 'http://localhost:3000/getemployees'
 
     axios.get(url,{

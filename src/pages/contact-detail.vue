@@ -149,7 +149,7 @@ export default {
               color: 'red',
               onClick: function() {
                 let url = process.env.NODE_ENV === 'production'
-                          ? 'http://slandasset.applinzi.com/contacts/API/delete.php'
+                          ? './API/delete.php'
                           : 'http://localhost:3000/deletecontact'
 
                 axios.post(url, {
@@ -213,7 +213,7 @@ export default {
           let formData = f7.formToData('#detail-form')
           let id = this.params.id
           let url = process.env.NODE_ENV === 'production'
-                    ? 'http://slandasset.applinzi.com/contacts/API/update.php'
+                    ? './API/update.php'
                     : 'http://localhost:3000/updatecontact'
 
           let pinyinOfName = pinyin.getCamelChars(this.name)

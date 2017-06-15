@@ -126,7 +126,7 @@ export default {
   },
   created () {
     let url = process.env.NODE_ENV === 'production'
-              ? 'http://slandasset.applinzi.com/contacts/API/get.php'
+              ? './API/get.php'
               : 'http://localhost:3000/getcontact'
 
     axios.get(url)
