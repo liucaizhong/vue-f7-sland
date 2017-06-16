@@ -122,7 +122,15 @@ export default {
   },
   mounted () {
     let query = this.$route.options.query
-    console.dir(query)
+    // console.dir(query)
+    // this.beginDate = {
+    //   month: +query.begin.substr(4,2),
+    //   day: +query.begin.substr(6,2)
+    // }
+    // this.endDate =  {
+    //   month: +query.end.substr(4,2),
+    //   day: +query.end.substr(6,2)
+    // }
     this.beginDate = {
       month: query.begin.getMonth()+1,
       day: query.begin.getDate()

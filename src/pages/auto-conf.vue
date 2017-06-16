@@ -219,6 +219,9 @@ export default {
     onGenPic (e) {
       if(this.tableData.length) {
         let router = this.$router || this.$f7.mainView.router
+        // let url = `/confres?begin=${this.formatDate(this.begin)}&end=${this.formatDate(this.end)}`
+        // console.log(url)
+        // router.loadPage(url)
         router.load({
           url: '/confres',
           query: {
