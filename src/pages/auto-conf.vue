@@ -37,9 +37,9 @@
           <div class="data-table-title">会议列表</div>
           <div class="data-table-actions">
             <!-- to perfect further -->
-            <!-- <a class="link icon-only" @click="onDownloadExcel($event)">
+            <a class="link icon-only" @click="onDownloadExcel($event)">
               <i class="icon f7-icons">cloud_download</i>
-            </a> -->
+            </a>
             <a class="link icon-only" @click="onGenPic($event)">
               <i class="icon f7-icons">forward</i>
             </a>
@@ -106,12 +106,13 @@
 
 <script>
 import axios from 'axios'
+import xlsx from 'xlsx'
 
 export default {
   data () {
     return {
       backTitle: '返回',
-      mainTitle: '会务',
+      mainTitle: '活动预告',
       dateRange: null,
       showTable: false,
       begin: '',
@@ -146,7 +147,7 @@ export default {
 
         // axios get data
         let url = process.env.NODE_ENV === 'production'
-                  ? 'http://wwy94621.sinaapp.com/agenda/convert.php'
+                  ? './convert.php'
                   : 'http://localhost:3000/getconference'
 
         axios.get(url, {
@@ -238,12 +239,60 @@ export default {
       day = day > 10 ? day : '0' + day
       return year+month+day
     },
-    // onDownloadExcel (e) {
-    //   console.log('begin download excel')
-    //   let htmltable= document.getElementById('conf-table');
-    //   let html = htmltable.outerHTML;
-    //   window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
-    // },
+    onDownloadExcel (e) {
+      console.log('begin download excel')
+      // let htmltable= document.getElementById('conf-table')
+      // let html = htmltable.outerHTML
+      // window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html))
+
+      // get data
+      let tableData = this.tableData
+      console.dir(tableData)
+      // set xlsx's header, footer and column name
+      let header = [`东方活动预告（${this.begin.getMonth() + 1}月${this.begin.getDate()}日`+
+                  `-${this.end.getMonth() + 1}月${this.end.getDate()}日）`]
+      let footer = ['请与各对口销售联系报名']
+      let columnName = ['时间', '会议主题', '参会方式', '会议关键词']
+      // new workbook
+      console.dir(xlsx)
+      let wb = xlsx.utils.book_new()
+      // make worksheet data
+      let ws_data = [header, columnName]
+      // insert table row
+      tableData.forEach((cur) => {
+        let dateStr = `${+cur.date.substr(4, 2)}月${+cur.date.substr(6, 2)}日`
+        let titleStr = cur.title || ''
+        let contactStr = this.getContactsString(cur.contacts)
+        let infos = `时间：${cur.time || ''}
+地点：${cur.place || ''}
+联系人：${contactStr || ''}`
+        let guestStr = '嘉宾:'+ (cur.guests || '')
+        ws_data.push([dateStr, titleStr, infos, guestStr])
+      })
+      ws_data.push(footer)
+      // new worksheet
+      let ws = xlsx.utils.aoa_to_sheet(ws_data)
+      xlsx.utils.book_append_sheet(wb, ws, '活动预告')
+      console.dir(wb)
+
+      // write xlsx and download it
+      let wopts = { bookType:'xlsx', bookSST:false, type:'binary' }
+
+      let wbout = xlsx.write(wb, wopts)
+
+      let FileSaver = require('file-saver')
+      let s2ab = function (s) {
+        let buf = new ArrayBuffer(s.length)
+        let view = new Uint8Array(buf)
+        for (let i = 0; i != s.length; ++i) {
+          view[i] = s.charCodeAt(i) & 0xFF
+        }
+        return buf
+      }
+      // the saveAs call downloads a file on the local machine
+      let fileName = header+'.xlsx'
+      FileSaver.saveAs(new Blob([s2ab(wbout)], {type:'application/octet-stream'}), fileName)
+    },
   }
 }
 </script>

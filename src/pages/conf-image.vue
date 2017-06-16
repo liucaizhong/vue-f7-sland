@@ -69,7 +69,7 @@ export default {
     return {
       loading: false,
       backTitle: '返回',
-      mainTitle: '会议列表',
+      mainTitle: '活动预告',
       beginDate: '',
       endDate: ''
     }

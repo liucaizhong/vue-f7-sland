@@ -101,7 +101,7 @@ import AutoConf from '@/pages/auto-conf.vue'
 export default {
   data () {
     return {
-      mainTitle: '' || '微投研',// 南土资产，公司列表，工作计划, 会务
+      mainTitle: '活动预告' || '微投研',// 南土资产，公司列表，工作计划, 活动预告
       isDev: process.env.NODE_ENV === 'development',
       // isProd: process.env.NODE_ENV === 'production'
     }
