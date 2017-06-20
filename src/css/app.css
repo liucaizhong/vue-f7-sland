@@ -143,16 +143,27 @@ option[data-default] {
   justify-content: space-between;
   flex-wrap: wrap;
   flex-direction: row;
+  border-bottom: 0.3px solid #d9d9d9;
+  border-right: 0.3px solid #d9d9d9;
+  padding: 0 0;
 }
 
 .workplan-option .block-container .chip {
-  margin: 5px 5px;
-  flex: 1 0 30%;
-  min-height: 30px;
+  flex: 1 0 50%;
+  height: 60px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  background-color: #007aff;
+  justify-content: flex-start;
+  background-color: #fff;
+  color: #000;
+  margin: 0 0;
+  border-radius: 0px;
+  border-top: 0.3px solid #d9d9d9;
+  border-left: 0.3px solid #d9d9d9;
+}
+
+.workplan-option .block-container .chip .chip-label {
+  margin: 0 auto;
 }
 
 .workplan-option .block-container .chip .badge {
@@ -201,6 +212,12 @@ option[data-default] {
   border-color: #007aff;
 }
 
+.home-page .slide_1 {
+  background-image: url(../../static/banner.jpg);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
 /*sudoku*/
 .sudoku-grids {
   position: relative;
@@ -237,6 +254,7 @@ option[data-default] {
 .sudoku-grid__label {
   margin-top: 5px;
   margin-bottom: 20px;
+  color: #000;
 }
 
 .conf-image .page-content {
@@ -540,4 +558,8 @@ option[data-default] {
     height: 97px;
   }
 
+}
+
+.task-progress {
+  margin: 35px 0px;
 }

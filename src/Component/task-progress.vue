@@ -1,56 +1,66 @@
 <template lang="html">
-<div class="task-timeline">
-  <f7-block>
-    <f7-timeline>
-      <f7-timeline-item day="21" month="DEC" inner content="Some text goes here"></f7-timeline-item>
-      <f7-timeline-item day="22" month="DEC" inner content="Another text goes here"></f7-timeline-item>
-    </f7-timeline>
-
-    <f7-timeline sides>
-      <f7-timeline-item day="21" month="DEC" inner content="Some text goes here"></f7-timeline-item>
-    </f7-timeline>
-
-    <f7-timeline sides>
-      <f7-timeline-item side="right" day="21" month="DEC" inner content="Some text goes here"></f7-timeline-item>
-      <f7-timeline-item side="left" day="23" month="DEC" inner content="Just plain text"></f7-timeline-item>
-    </f7-timeline>
-
-    <f7-timeline>
-      <!-- With Item Elements -->
-      <f7-timeline-item
-        day="21"
-        month="DEC"
-        inner
-        time="12:56"
-        title="Item Title"
-        subtitle="Item Subtitle"
-        text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor fugiat ipsam hic porro enim, accusamus perferendis, quas commodi alias quaerat eius nemo deleniti. Odio quasi quos quis iure, aperiam pariatur?"
-      ></f7-timeline-item>
-
-      <!-- With List -->
-      <f7-timeline-item
-        day="23"
-        month="DEC"
-      >
-        <f7-list inset>
-          <f7-list-item link="#" title="Item 1"></f7-list-item>
-        </f7-list>
-      </f7-timeline-item>
-
-      <!-- With Card -->
-      <f7-timeline-item
-        day="24"
-        month="DEC"
-      >
-        <f7-card title="Card Header" content="Card Content" footer="Card Footer"></f7-card>
-      </f7-timeline-item>
-    </f7-timeline>
-
-  </f7-block>
+<div id="task-histogram" class="task-progress">
 </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      chartData: [5, 20, 85]
+    }
+  },
+  created () {
+    // axios get data
+  },
+  mounted () {
+    // calc height;ratio 4:3
+    let taskHistogram = document.getElementById('task-histogram')
+    taskHistogram.setAttribute('style', `height:${Math.round(taskHistogram.offsetWidth*3/4)}px;`)
+    console.dir(taskHistogram)
+    // declare echarts and draw the histogram
+    let echarts = require('echarts')
+    let histogram = echarts.init(taskHistogram)
+
+    histogram.setOption({
+      color: ['#5584B1'],
+      title: {
+        show: false
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer : {
+          type: 'shadow'
+        },
+        formatter: '{b}<br>{a}: {c}%'
+      },
+      xAxis: [{
+        type: 'category',
+        data: ['调研', '个股深度', '行业深度']
+      }],
+      yAxis: [{
+        name: '完成比(%)',
+        min: 0,
+        max: 100,
+        type: 'value',
+        splitNumber: 5
+      }],
+      series: [{
+          name: '完成比',
+          type: 'bar',
+          data: this.chartData
+      }]
+    })
+
+    // window.onresize = function () {
+    //   let el = document.getElementById('task-histogram')
+    //   let width = el.offsetWidth
+    //   let height = Math.round(width*3/4)
+    //   histogram.resize({
+    //     width: width+'px',
+    //     height: height+'px'
+    //   })
+    // }
+  }
 }
 </script>

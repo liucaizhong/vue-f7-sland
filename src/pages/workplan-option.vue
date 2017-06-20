@@ -23,9 +23,9 @@
         @click="onNavTo($event, item.userId)"
       >
         <div class="chip-label">{{item.userName}}</div>
-        <div class="chip-media" v-if="item.amount">
+        <!-- <div class="chip-media" v-if="item.amount">
           <span class="badge">{{item.amount}}</span>
-        </div>
+        </div> -->
       </div>
     </f7-block>
   </div>
@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { DEPARTMENTS } from '../constant.js'
-import { DEPARTMENTSDESC } from '../constant.js'
+import { DEPARTMENTS, DEPARTMENTSDESC } from '../constant.js'
+// import { DEPARTMENTSDESC } from '../constant.js'
 import axios from 'axios'
 
 export default {

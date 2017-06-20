@@ -18,7 +18,11 @@
     </header>
     <div class="content">
       <ul>
-        <li v-for="(value, key) in imageData" class="outer-li" v-if="value">
+        <li
+          v-for="(value, key) in imageData"
+          class="outer-li"
+          v-if="!isEmpty(value)"
+        >
           <header>
               <div class="date">
                   <span>{{getDayString(key)}}</span>
@@ -64,6 +68,8 @@
 </template>
 
 <script>
+import Common from '../tools.js'
+
 export default {
   data () {
     return {
@@ -118,6 +124,9 @@ export default {
       return contacts.map((cur) => {
         return cur.person+cur.phone
       }).join('/')
+    },
+    isEmpty(obj) {
+      return Common.isEmptyObject(obj)
     }
   },
   mounted () {
