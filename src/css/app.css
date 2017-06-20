@@ -563,3 +563,25 @@ option[data-default] {
 .task-progress {
   margin: 35px 0px;
 }
+
+/* toolbar */
+.toolbar .toolbar-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.toolbar .toolbar-inner > a {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  font-size: 10px;
+  height: 50px;
+  line-height: 20px;
+  padding-top: 5px;
+  flex: 1 1 auto;
+}
+
+.toolbar .toolbar-inner > a > i {
+  margin-left: 0px !important;
+}

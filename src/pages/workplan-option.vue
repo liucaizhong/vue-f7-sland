@@ -29,6 +29,7 @@
       </div>
     </f7-block>
   </div>
+  <bottom-toolbar page="workplan-option"></bottom-toolbar>
 </f7-page>
 </template>
 
@@ -36,6 +37,7 @@
 import { DEPARTMENTS, DEPARTMENTSDESC } from '../constant.js'
 // import { DEPARTMENTSDESC } from '../constant.js'
 import axios from 'axios'
+import BottomToolbar from '@/Component/bottom-toolbar.vue'
 
 export default {
   data () {
@@ -51,6 +53,9 @@ export default {
       quarter: '',
       isDev: process.env.NODE_ENV === 'development',
     }
+  },
+  components: {
+    bottomToolbar: BottomToolbar
   },
   created () {
     // get loginfo

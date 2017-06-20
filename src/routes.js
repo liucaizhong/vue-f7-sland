@@ -26,5 +26,9 @@ export default [
   {
     path: '/confres',
     component: require('./pages/conf-image.vue')
+  },
+  {
+    path: '/home',
+    component: require('./pages/home-page.vue')
   }
 ]

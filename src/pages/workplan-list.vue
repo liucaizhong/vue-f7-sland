@@ -50,6 +50,7 @@
     </f7-tabs>
   </f7-block>
 
+  <bottom-toolbar page="workplan-list"></bottom-toolbar>
 </f7-page>
 </template>
 
@@ -59,6 +60,7 @@ import Common from '../tools.js'
 import WorkPlan from '@/Component/work-plan.vue'
 import TaskProgress from '@/Component/task-progress.vue'
 import axios from 'axios'
+import BottomToolbar from '@/Component/bottom-toolbar.vue'
 
 export default {
   data () {
@@ -247,7 +249,8 @@ export default {
   },
   components: {
     workPlan: WorkPlan,
-    taskProgress: TaskProgress
+    taskProgress: TaskProgress,
+    bottomToolbar: BottomToolbar,
   }
 }
 </script>

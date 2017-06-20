@@ -1,5 +1,5 @@
 <template lang="html">
-<div id="task-histogram" class="task-progress">
+<div class="task-progress">
 </div>
 </template>
 
@@ -7,21 +7,21 @@
 export default {
   data () {
     return {
-      chartData: [5, 20, 85]
+
     }
   },
-  created () {
-    // axios get data
-  },
   mounted () {
-    // calc height;ratio 4:3
-    let taskHistogram = document.getElementById('task-histogram')
-    taskHistogram.setAttribute('style', `height:${Math.round(taskHistogram.offsetWidth*3/4)}px;`)
-    console.dir(taskHistogram)
-    // declare echarts and draw the histogram
+    // declare echarts
     let echarts = require('echarts')
+    // get dom element
+    let taskHistogram = document.querySelector('.task-progress')
+    // calc height;ratio 4:3
+    taskHistogram.setAttribute('style', `height:${Math.round(taskHistogram.offsetWidth*3/4)}px;`)
+    // declare the histogram instance
     let histogram = echarts.init(taskHistogram)
-
+    // axios get data
+    let chartData = [5, 20, 85]
+    // draw the histogram
     histogram.setOption({
       color: ['#5584B1'],
       title: {
@@ -48,7 +48,7 @@ export default {
       series: [{
           name: '完成比',
           type: 'bar',
-          data: this.chartData
+          data: chartData
       }]
     })
 

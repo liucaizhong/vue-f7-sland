@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Home from '@/pages/home-page.vue'
+import Home from '@/pages/home.vue'
 // import CompList from '@/pages/comp-list.vue'
 import AddContact from '@/pages/add-contact.vue'
 
