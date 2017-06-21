@@ -60,14 +60,31 @@ export default {
   created () {
     // get loginfo
     // will move to home-page in the further
-    let curUri = window.location.href
-    curUri = 'http://slandasset.applinzi.com/workplan/index.html?code=chenjw'//for test
+    let curUri = this.isDev
+            ?'http://slandasset.applinzi.com/workplan/index.html?code=chenjw'
+            : window.location.href
     console.log('curUri: '+curUri)
     let patt = /code=(.*)/g
     let userId = patt.exec(curUri)[1]
     console.log(userId)
-    this.$store.commit('initUser', {
-      userId: userId
+    // get userInfo
+    let url = process.env.NODE_ENV === 'production'
+                  ? './API/getUser.php'
+                  : 'http://localhost:3000/getuser'
+
+    axios.get(url,{
+      params: {
+        comp: this.comp,
+        userId: userId
+      }
+    })
+    .then((response) => {
+      let dataObj = response.data[0]
+      console.dir(response)
+      this.$store.commit('initUser', {...dataObj})
+    })
+    .catch((error) => {
+      console.log(error)
     })
     // set current year and quarter
     let date = new Date()
@@ -75,7 +92,7 @@ export default {
     this.quarter = Math.floor(date.getMonth()/3)
     // axios to get members
     //params: array[dep1, dep2, ...]
-    let url = process.env.NODE_ENV === 'production'
+    url = process.env.NODE_ENV === 'production'
               ? './API/getUsers.php'
               : 'http://localhost:3000/getemployees'
 

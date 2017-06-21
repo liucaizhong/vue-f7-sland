@@ -4,6 +4,7 @@
       v-for="link in currentLinks"
       :href="link.href"
       :text="link.text"
+      :class="{external: !isDev}"
     >
       <component :is="link.iconTemplate">
       </component>
@@ -15,6 +16,7 @@
 export default {
   data () {
     return {
+      isDev: process.env.NODE_ENV === 'development',
       linkSet: {
         'home': [{
           href: '/index.php',

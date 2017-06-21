@@ -1,14 +1,10 @@
 const state = {
-  userInfo: {
-    userId: '',
-    userName: '',
-    password: ''
-  }
+  userInfo: {}
 }
 
 const mutations = {
   initUser (state, payload) {
-    state.userInfo = {...payload.data}
+    state.userInfo = {...payload}
   }
 }
 

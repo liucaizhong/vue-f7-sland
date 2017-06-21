@@ -1,20 +1,86 @@
 <template lang="html">
 <div class="task-progress">
+  <div
+    class="data-table data-table-init card"
+    v-for="type in types"
+  >
+    <!-- Card header -->
+    <div class="card-header">
+      <!-- Default table header -->
+      <div class="data-table-header">
+        <div class="data-table-title">{{ titles[type] }}</div>
+      </div>
+    </div>
+    <div class="card-content">
+      <table>
+        <thead>
+          <tr>
+            <th
+              class="label-cell"
+              v-for="label in forms[type]"
+            >{{ label.desc }}</th>
+          </tr>
+        </thead>
+        <tbody v-if="tableData[type].length">
+          <tr
+            v-for="value in tableData[type]"
+          >
+            <td
+              class="label-cell"
+              v-for="name in forms[type]"
+            >{{value[name.name]}}</td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td class="label-cell">待添加</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="data-table card">
+    <div class="card-header">
+      <div class="data-table-header">
+        <div class="data-table-title">完成情况</div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="chart"></div>
+    </div>
+  </div>
+
 </div>
 </template>
 
 <script>
+import { PLANTYPES, PLANTITLES, PLANFORMS } from '../constant.js'
+
 export default {
   data () {
     return {
-
+      types: PLANTYPES,
+      titles: PLANTITLES,
+      forms: PLANFORMS
+    }
+  },
+  computed: {
+    tableData: function () {
+      let workplan = {...this.$store.state.workplan}
+      console.dir(workplan)
+      return {
+        [PLANTYPES[0]]: workplan[PLANTYPES[0]].curPlan,
+        [PLANTYPES[1]]: workplan[PLANTYPES[1]].curPlan,
+        [PLANTYPES[2]]: workplan[PLANTYPES[2]].curPlan,
+      }
     }
   },
   mounted () {
     // declare echarts
     let echarts = require('echarts')
     // get dom element
-    let taskHistogram = document.querySelector('.task-progress')
+    let taskHistogram = document.querySelector('.task-progress .chart')
     // calc height;ratio 4:3
     taskHistogram.setAttribute('style', `height:${Math.round(taskHistogram.offsetWidth*3/4)}px;`)
     // declare the histogram instance
@@ -25,7 +91,9 @@ export default {
     histogram.setOption({
       color: ['#5584B1'],
       title: {
-        show: false
+        show: false,
+        // text: '完成情况',
+        // textBaseline: 'middle'
       },
       tooltip: {
         trigger: 'axis',

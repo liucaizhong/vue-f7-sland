@@ -10,14 +10,14 @@
     </f7-nav-left>
     <f7-nav-center>{{mainTitle}}</f7-nav-center>
     <f7-nav-right>
-      <f7-link @click="onEdit" v-show="hasAuthority">{{editTitle}}</f7-link>
+      <f7-link @click="onEdit" v-if="hasAuthority">{{editTitle}}</f7-link>
     </f7-nav-right>
   </f7-navbar>
 
   <f7-preloader v-show="loading" color="blue" size="25px" class="spinner">
   </f7-preloader>
 
-  <f7-block>
+  <!-- <f7-block>
     <f7-buttons>
       <f7-button
         tab-link="#tab-1"
@@ -48,14 +48,27 @@
         </taskProgress>
       </f7-tab>
     </f7-tabs>
-  </f7-block>
+  </f7-block> -->
+
+  <work-plan
+    v-for="value in types"
+    v-show="editing"
+    :planType="value"
+    :editing="editing"
+    :formContent="configForm(value)"
+    :planTitle="configTitle(value)"
+  >
+  </work-plan>
+
+  <taskProgress v-show="!editing">
+  </taskProgress>
 
   <bottom-toolbar page="workplan-list"></bottom-toolbar>
 </f7-page>
 </template>
 
 <script>
-import { PLANTYPES } from '../constant.js'
+import { PLANTYPES, PLANTITLES, PLANFORMS } from '../constant.js'
 import Common from '../tools.js'
 import WorkPlan from '@/Component/work-plan.vue'
 import TaskProgress from '@/Component/task-progress.vue'
@@ -116,8 +129,29 @@ export default {
       return this.editing ? '保存' : '编辑'
     },
     hasAuthority: function () {
-      return true //for test, will be commented in the future
-      // return !this.curUserId.localeCompare(this.$store.state.loginfo.userInfo.userId)
+      let loginfo = {...this.$store.state.loginfo.userInfo}
+      console.log('loginfo is:')
+      console.dir(loginfo)
+      // validate if the user has enough authority
+      // 1.if the user is administrator
+      if(!loginfo.role.localeCompare('0')) {
+        return true
+      }
+      // 2.if the current date is among the valid period
+      // (from the beginning of querter to the middle)
+      let curDate = new Date()
+      if(curDate.getMonth()%3 != 0) {
+        return false
+      }
+      if(curDate.getDate() > 15) {
+        return false
+      }
+      // 3.if the user is same as the user checked
+      if(!this.curUserId.localeCompare(loginfo.userId)) {
+        return true
+      }
+
+      return false
     },
   },
   methods: {
@@ -132,13 +166,16 @@ export default {
         let workplan = Object.assign({}, this.$store.state.workplan)
         let updObj = this.types.map((cur) => {
           let willUpdPlan = workplan[cur].willUpdPlan
-          willUpdPlan.forEach((val, idx) => {
-            if(Common.isEmptyObject(val)) {
-              cur.splice(idx, 1)
+          let updArr = []
+          willUpdPlan.forEach((val) => {
+            if(!Common.isEmptyObject(val)) {
+              updArr.push(val)
             }
           })
-          return {
-            [cur]: willUpdPlan
+          if(updArr && updArr.length) {
+            return {
+              [cur]: updArr
+            }
           }
         }).reduce((total, cur) => {
           return Object.assign(total, cur)
@@ -154,8 +191,6 @@ export default {
           quarter: this.quarter,
         }, updObj)
 
-        console.dir(updData)
-
         axios.post(url, updData, {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -165,15 +200,14 @@ export default {
           console.log('response back!')
           console.dir(response)
           let res = JSON.parse(response.data)
-          console.dir(res)
           this.$store.commit('initPlan', res)
           this.loading = false
           this.editing = !this.editing
+          this.$f7.alert('更新成功！', '')
         })
         .catch((error) => {
           console.log(error)
         })
-
       }
       else {
         this.editing = !this.editing
@@ -194,57 +228,59 @@ export default {
       }
     },
     configForm (type) {
-      switch (type) {
-        case this.types[0]:
-          return [{
-            name: 'comp',
-            desc: '公司名称'
-          },{
-            name: 'date',
-            desc: '预计调研时间'
-          },{
-            name: 'event',
-            desc: '预期看点'
-          }]
-          break
-        case this.types[1]:
-          return [{
-            name: 'stock',
-            desc: '个股名称'
-          },{
-            name: 'finishDate',
-            desc: '预计完成时间'
-          },{
-            name: 'reportDate',
-            desc: '预计汇报时间'
-          }]
-          break
-        case this.types[2]:
-          return [{
-            name: 'indus',
-            desc: '行业主题'
-          },{
-            name: 'finishDate',
-            desc: '预计完成时间'
-          },{
-            name: 'reportDate',
-            desc: '预计汇报时间'
-          }]
-          break
-      }
+      return PLANFORMS[type]
+      // switch (type) {
+      //   case this.types[0]:
+      //     return [{
+      //       name: 'comp',
+      //       desc: '公司名称'
+      //     },{
+      //       name: 'date',
+      //       desc: '预计调研日期'
+      //     },{
+      //       name: 'event',
+      //       desc: '预期看点'
+      //     }]
+      //     break
+      //   case this.types[1]:
+      //     return [{
+      //       name: 'stock',
+      //       desc: '个股名称'
+      //     },{
+      //       name: 'finishDate',
+      //       desc: '预计完成日期'
+      //     },{
+      //       name: 'reportDate',
+      //       desc: '预计汇报日期'
+      //     }]
+      //     break
+      //   case this.types[2]:
+      //     return [{
+      //       name: 'indus',
+      //       desc: '行业主题'
+      //     },{
+      //       name: 'finishDate',
+      //       desc: '预计完成日期'
+      //     },{
+      //       name: 'reportDate',
+      //       desc: '预计汇报日期'
+      //     }]
+      //     break
+      // }
     },
     configTitle (type) {
-      switch (type) {
-        case this.types[0]:
-          return '调研计划'
-          break
-        case this.types[1]:
-          return '个股报告计划'
-          break
-        case this.types[2]:
-          return '行业报告计划'
-          break
-      }
+      return PLANTITLES[type]
+      // switch (type) {
+      //   case this.types[0]:
+      //     return '调研'
+      //     break
+      //   case this.types[1]:
+      //     return '个股深度报告'
+      //     break
+      //   case this.types[2]:
+      //     return '行业深度报告'
+      //     break
+      // }
     }
   },
   components: {
