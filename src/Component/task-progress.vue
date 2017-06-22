@@ -89,7 +89,6 @@ export default {
     let curDate = new Date()
     let curYear = curDate.getFullYear()
     let curQuarter = Math.floor(curDate.getMonth()/3)+1
-    let curQuarterDesc = ['一季度', '二季度', '三季度', '四季度'][curQuarter-1]
     // declare echarts
     let echarts = require('echarts')
     // get dom element
@@ -113,11 +112,6 @@ export default {
     })
     .then((response) => {
       let data = response.data
-      console.dir(data)
-      let echartData = this.types.map((type) => {
-        return Math.round(+data[type].finish/+data[type].plan*100)
-      })
-      console.dir(echartData)
       // draw the histogram
       histogram.setOption({
         color: ['#5584B1'],
@@ -135,7 +129,11 @@ export default {
           type: 'category',
           data: this.types.map((type) => {
             return this.titles[type]
-          })
+          }),
+          axisLabel: {
+            show: true,
+            interval: 0
+          }
         }],
         yAxis: [{
           name: '完成比(%)',
@@ -147,7 +145,9 @@ export default {
         series: [{
             name: '完成比',
             type: 'bar',
-            data: echartData
+            data: this.types.map((type) => {
+              return Math.round(+data[type].finish/+data[type].plan*100)
+            })
         }]
       })
     })

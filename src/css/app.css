@@ -190,7 +190,7 @@ option[data-default] {
 /*swiper*/
 .home-page .swiper-container {
   position: relative;
-  height: 35%;
+  height: 200px;
 }
 
 .home-page .swiper-slide {
