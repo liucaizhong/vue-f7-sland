@@ -17,6 +17,7 @@ const urlMap = {
   '/updateworkplan': slandUrl+'/workplan/API/updateWP.php',
   '/getconference': orientUrl+'/agenda/convert.php',
   '/getuser': slandUrl+'/workplan/API/getUser.php',
+  '/getfinished': slandUrl+'/workplan/API/getFinished.php',
 }
 
 function mapUrl(rawUrl) {
@@ -143,9 +144,18 @@ module.exports = () => {
     console.log(realUrl)
     requestGet(realUrl, req, res)
   })
-  //get conference list
+  //get user info
   router.get('/getuser', (req, res) => {
     console.log('getuser start!')
+    let urlObj = url.parse(req.url)
+    urlObj.pathname = mapUrl(urlObj.pathname)
+    let realUrl = url.format(urlObj)
+    console.log(realUrl)
+    requestGet(realUrl, req, res)
+  })
+  //get task achievement of specified user
+  router.get('/getfinished', (req, res) => {
+    console.log('getfinished start!')
     let urlObj = url.parse(req.url)
     urlObj.pathname = mapUrl(urlObj.pathname)
     let realUrl = url.format(urlObj)

@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import Common from '../tools.js'
+import Common from '../Lib/tools.js'
 
 export default {
   data () {
@@ -134,23 +134,23 @@ export default {
     },
     onOpen (e) {
       console.log('open accordion')
-      console.dir(e.target)
+      // console.dir(e.target)
       let target = e.target
       let dataAttr = target.dataset
       let form = target.getElementsByTagName('FORM')[0]
-      console.dir(form)
+      // console.dir(form)
       let f7 = this.$f7
       let formData = this.$store.state.workplan[dataAttr.type].curPlan[dataAttr.idx]
-      console.dir(formData)
+      // console.dir(formData)
       f7.formFromData(form, formData)
       if(!target.hasAttribute('data-content')) {
         target.setAttribute('data-content', JSON.stringify(formData))
       }
-      console.dir(e.target)
+      // console.dir(e.target)
     },
     onClose (e) {
       console.log('close accordion')
-      console.log(this.editing)
+      // console.log(this.editing)
       if(this.editing) {
         let target = e.target
         let dataAttr = target.dataset
@@ -164,9 +164,9 @@ export default {
         })
         let preFormData = target.dataset.content || '{}'
         let preFormDataObj = JSON.parse(preFormData)
-        console.dir(curFormDataObj)
-        console.dir(preFormDataObj)
-        console.dir(Common)
+        // console.dir(curFormDataObj)
+        // console.dir(preFormDataObj)
+        // console.dir(Common)
         if(!Common.isSameObject(preFormDataObj, curFormDataObj)) {
           console.log('update begin')
           target.setAttribute('data-content', JSON.stringify(curFormDataObj))
@@ -178,12 +178,12 @@ export default {
           })
         }
       }
-      console.dir(e.target)
+      // console.dir(e.target)
     },
     onDel (e) {
       this.showDelBtn = true
       let parentLi = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
-      console.dir(parentLi)
+      // console.dir(parentLi)
       parentLi.style.transform = 'translateX(-60px)'
     },
     onConfirmDel (e) {

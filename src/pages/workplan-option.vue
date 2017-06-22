@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { DEPARTMENTS, DEPARTMENTSDESC } from '../constant.js'
+import { DEPARTMENTS, DEPARTMENTSDESC } from '../Lib/constant.js'
 // import { DEPARTMENTSDESC } from '../constant.js'
 import axios from 'axios'
 import BottomToolbar from '@/Component/bottom-toolbar.vue'

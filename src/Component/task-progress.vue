@@ -55,28 +55,41 @@
 </template>
 
 <script>
-import { PLANTYPES, PLANTITLES, PLANFORMS } from '../constant.js'
+import { PLANTYPES, PLANTITLES, PLANFORMS } from '../Lib/constant.js'
+import axios from 'axios'
 
 export default {
   data () {
     return {
       types: PLANTYPES,
       titles: PLANTITLES,
-      forms: PLANFORMS
+      forms: PLANFORMS,
     }
   },
   computed: {
     tableData: function () {
       let workplan = {...this.$store.state.workplan}
-      console.dir(workplan)
       return {
-        [PLANTYPES[0]]: workplan[PLANTYPES[0]].curPlan,
-        [PLANTYPES[1]]: workplan[PLANTYPES[1]].curPlan,
-        [PLANTYPES[2]]: workplan[PLANTYPES[2]].curPlan,
+        [this.types[0]]: workplan[this.types[0]].curPlan,
+        [this.types[1]]: workplan[this.types[1]].curPlan,
+        [this.types[2]]: workplan[this.types[2]].curPlan,
       }
     }
   },
+  props: {
+    'userId': {
+      type: String
+    },
+    'comp': {
+      type: String
+    }
+  },
   mounted () {
+    // calc year, quarter and desc
+    let curDate = new Date()
+    let curYear = curDate.getFullYear()
+    let curQuarter = Math.floor(curDate.getMonth()/3)+1
+    let curQuarterDesc = ['一季度', '二季度', '三季度', '四季度'][curQuarter-1]
     // declare echarts
     let echarts = require('echarts')
     // get dom element
@@ -86,38 +99,60 @@ export default {
     // declare the histogram instance
     let histogram = echarts.init(taskHistogram)
     // axios get data
-    let chartData = [5, 20, 85]
-    // draw the histogram
-    histogram.setOption({
-      color: ['#5584B1'],
-      title: {
-        show: false,
-        // text: '完成情况',
-        // textBaseline: 'middle'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer : {
-          type: 'shadow'
+    let url = process.env.NODE_ENV === 'production'
+                  ? './API/getFinished.php'
+                  : 'http://localhost:3000/getfinished'
+
+    axios.get(url,{
+      params: {
+        comp: this.comp,
+        userId: this.userId,
+        year: curYear,
+        quarter: curQuarter
+      }
+    })
+    .then((response) => {
+      let data = response.data
+      console.dir(data)
+      let echartData = this.types.map((type) => {
+        return Math.round(+data[type].finish/+data[type].plan*100)
+      })
+      console.dir(echartData)
+      // draw the histogram
+      histogram.setOption({
+        color: ['#5584B1'],
+        title: {
+          show: false,
         },
-        formatter: '{b}<br>{a}: {c}%'
-      },
-      xAxis: [{
-        type: 'category',
-        data: ['调研', '个股深度', '行业深度']
-      }],
-      yAxis: [{
-        name: '完成比(%)',
-        min: 0,
-        max: 100,
-        type: 'value',
-        splitNumber: 5
-      }],
-      series: [{
-          name: '完成比',
-          type: 'bar',
-          data: chartData
-      }]
+        tooltip: {
+          trigger: 'axis',
+          axisPointer : {
+            type: 'shadow'
+          },
+          formatter: '{b}<br>{a}: {c}%'
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.types.map((type) => {
+            return this.titles[type]
+          })
+        }],
+        yAxis: [{
+          name: '完成比(%)',
+          min: 0,
+          max: 100,
+          type: 'value',
+          splitNumber: 5
+        }],
+        series: [{
+            name: '完成比',
+            type: 'bar',
+            data: echartData
+        }]
+      })
+    })
+    .catch((error) => {
+      console.log(error)
     })
 
     // window.onresize = function () {
@@ -129,6 +164,7 @@ export default {
     //     height: height+'px'
     //   })
     // }
+
   }
 }
 </script>

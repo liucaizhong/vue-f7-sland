@@ -60,7 +60,7 @@
   >
   </work-plan>
 
-  <taskProgress v-show="!editing">
+  <taskProgress v-show="!editing" :userId="curUserId" :comp="comp">
   </taskProgress>
 
   <bottom-toolbar page="workplan-list"></bottom-toolbar>
@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import { PLANTYPES, PLANTITLES, PLANFORMS } from '../constant.js'
-import Common from '../tools.js'
+import { PLANTYPES, PLANTITLES, PLANFORMS } from '../Lib/constant.js'
+import Common from '../Lib/tools.js'
 import WorkPlan from '@/Component/work-plan.vue'
 import TaskProgress from '@/Component/task-progress.vue'
 import axios from 'axios'
@@ -88,7 +88,8 @@ export default {
       // hasAuthority: true,
       curUserId: '',
       types: PLANTYPES,
-      isDev: process.env.NODE_ENV === 'development'
+      isDev: process.env.NODE_ENV === 'development',
+      comp: '1',
     }
   },
   created () {
@@ -110,9 +111,9 @@ export default {
       }
     })
     .then((response) => {
-      console.dir(response)
+      // console.dir(response)
       let dataObj = response.data
-      console.dir(dataObj)
+      // console.dir(dataObj)
       this.$store.commit('initPlan', dataObj)
       this.loading = false
     })
@@ -130,8 +131,8 @@ export default {
     },
     hasAuthority: function () {
       let loginfo = {...this.$store.state.loginfo.userInfo}
-      console.log('loginfo is:')
-      console.dir(loginfo)
+      // console.log('loginfo is:')
+      // console.dir(loginfo)
       // validate if the user has enough authority
       // 1.if the user is administrator
       if(!loginfo.role.localeCompare('0')) {
@@ -198,7 +199,7 @@ export default {
         })
         .then((response) => {
           console.log('response back!')
-          console.dir(response)
+          // console.dir(response)
           let res = JSON.parse(response.data)
           this.$store.commit('initPlan', res)
           this.loading = false

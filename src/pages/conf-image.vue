@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import Common from '../tools.js'
+import Common from '../Lib/tools.js'
 
 export default {
   data () {

@@ -1,4 +1,4 @@
-import { PLANTYPES } from '../../constant.js'
+import { PLANTYPES } from '../../Lib/constant.js'
 
 let types = PLANTYPES
 let preState = {}

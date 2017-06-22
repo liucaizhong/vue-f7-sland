@@ -83,7 +83,7 @@
 
 <script>
 import axios from 'axios'
-import pinyin from '../plugins/pinyin.js'
+import pinyin from '../Lib/pinyin.js'
 
 export default {
   data () {
