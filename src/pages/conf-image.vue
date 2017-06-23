@@ -64,6 +64,7 @@
     <footer class="footer">
     </footer>
   </div>
+  
 </f7-page>
 </template>
 
