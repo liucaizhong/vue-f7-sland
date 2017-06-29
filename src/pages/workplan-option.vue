@@ -17,16 +17,18 @@
       {{key}}
     </f7-block-title>
     <f7-block class="block-container">
-      <div
+      <!-- @click="onNavTo($event, item.userId)" -->
+      <!-- :href="'workplan/'+item.userId" -->
+      <f7-link
         class="chip"
         v-for="item in value"
-        @click="onNavTo($event, item.userId)"
+        :href="'workplan/'+item.userId"
       >
         <div class="chip-label">{{item.userName}}</div>
         <!-- <div class="chip-media" v-if="item.amount">
           <span class="badge">{{item.amount}}</span>
         </div> -->
-      </div>
+      </f7-link>
     </f7-block>
   </div>
   <bottom-toolbar page="workplan-option"></bottom-toolbar>
@@ -124,13 +126,12 @@ export default {
       //   window.location.href = '/index.php'
       // }
     // },
-    onNavTo (e, userId) {
-      console.log(userId)
-      let router = this.$router || this.$f7.mainView.router
-      router.load({
-        url: '/workplan/' + userId
-      })
-    }
+    // onNavTo (e, userId) {
+    //   let router = this.$router || this.$f7.mainView.router
+    //   router.load({
+    //     url: '/workplan/' + userId
+    //   })
+    // }
   }
 }
 </script>

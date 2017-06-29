@@ -98,6 +98,7 @@ export default {
     this.year = date.getFullYear()
     this.quarter = Math.floor(date.getMonth()/3)
     this.curUserId = this.$route.params.id
+    console.dir(this.$route)
     // get workplan
     let url = process.env.NODE_ENV === 'production'
               ? './API/getWP.php'
@@ -183,7 +184,7 @@ export default {
         }, {})
 
         let url = process.env.NODE_ENV === 'production'
-                  ? 'http://slandasset.applinzi.com/workplan/API/updateWP.php'
+                  ? './API/updateWP.php'
                   : 'http://localhost:3000/updateworkplan'
 
         let updData =  Object.assign({

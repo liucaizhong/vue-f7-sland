@@ -223,7 +223,7 @@ export default {
         // console.log(url)
         // router.loadPage(url)
         router.load({
-          url: '/confres',
+          url: 'confres',
           query: {
             begin: this.begin,
             end: this.end

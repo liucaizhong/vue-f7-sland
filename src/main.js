@@ -50,8 +50,8 @@ new Vue({
     routes: Routes,
     // cache: true,
     // pushState: true,
+    // pushStateSeparator: '#',
     externalLinks: '.external',
-    // pushStateSeparator: '#'
   },
   // Register App Component
   components: {
