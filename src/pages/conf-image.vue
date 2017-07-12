@@ -64,7 +64,7 @@
     <footer class="footer">
     </footer>
   </div>
-  
+
 </f7-page>
 </template>
 
@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     getDayString (str) {
-      let date = new Date(str.substr(0, 4), str.substr(4, 2), str.substr(6, 2))
+      let date = new Date(str.substr(0, 4), +str.substr(4, 2)-1, str.substr(6, 2))
       return '星期'+ (function(day) {
         switch (day) {
           case 0:
